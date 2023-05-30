@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for uDALES">
+    <meta name="author" content="The uDALES Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>excj &ndash; uDALES</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+         <script src="../js/jquery-2.1.3.min.js"></script>
+         <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">uDALES </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+                 data-toggle="dropdown" role="button"
+                 aria-haspopup="true"
+                 aria-expanded="false">
+                 Contents <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                    <li><a href="../lists/files.html">Source Files</a></li>
+                  <li><a href="../lists/modules.html">Modules</a></li>
+                  <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/types.html">Derived Types</a></li>
+                  <li><a href="../program/dalesurban.html">Program</a></li>
+              </ul>
+            </li>
+                <li class="visible-xs hidden-sm visible-lg">
+                  <a href="../lists/files.html">Source Files</a>
+                </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/modules.html">Modules</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/types.html">Derived Types</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../program/dalesurban.html">Program</a>
+              </li>
+          </ul>
+            <form action="../search.html" class="navbar-form navbar-right" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+              </div>
+              <!--
+                  <button type="submit" class="btn btn-default">Submit</button>
+                  -->
+            </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+  <div class="row">
+    <h1>excj
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="row" id="info-bar">
+    <div class="col-lg-12">
+      <div class="well well-sm">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+          <li id="statements"><i class="fa fa-list-ol"></i>
+            <a data-toggle="tooltip"
+               data-placement="bottom" data-html="true"
+               title=" 0.4% of total for procedures.">46 statements</a>
+          </li>
+
+            <li id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/modmpi.f90"> Source File</a>
+            </li>
+        </ul>
+        <ol class="breadcrumb in-well text-right">
+              <li><a href='../sourcefile/modmpi.f90.html'>modmpi.f90</a></li>
+              <li><a href='../module/modmpi.html'>modmpi</a></li>
+          <li class="active">excj</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/excj.html#src">excj</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public  subroutine excj(a, sx, ex, sy, ey, sz, ez)  
+</h2>
+    
+
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-a~2"></span>
+              real
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>a</strong>(sx:ex,sy:ey,sz:ez)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sx~2"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sx</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ex"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ex</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sy"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sy</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ey"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ey</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sz"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sz</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ez"></span>
+              integer
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ez</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Calls</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: proc~~excj~~CallsGraph Pages: 1 -->
+<svg id="procexcjCallsGraph" width="215pt" height="32pt"
+ viewBox="0.00 0.00 215.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~excj~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~excj~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 211,-28 211,4 -4,4"/>
+<!-- proc~excj -->
+<g id="proc~~excj~~CallsGraph_node1" class="node">
+<title>proc~excj</title>
+<polygon fill="none" stroke="black" points="85,-24 0,-24 0,0 85,0 85,-24"/>
+<text text-anchor="middle" x="42.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">modmpi::excj</text>
+</g>
+<!-- mpi_sendrecv -->
+<g id="proc~~excj~~CallsGraph_node2" class="node">
+<title>mpi_sendrecv</title>
+<polygon fill="#777777" stroke="#777777" points="207,-24 121,-24 121,0 207,0 207,-24"/>
+<text text-anchor="middle" x="164" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mpi_sendrecv</text>
+</g>
+<!-- proc~excj&#45;&gt;mpi_sendrecv -->
+<g id="proc~~excj~~CallsGraph_edge1" class="edge">
+<title>proc~excj&#45;&gt;mpi_sendrecv</title>
+<path fill="none" stroke="#255000" d="M85.3,-12C93.43,-12 102.05,-12 110.48,-12"/>
+<polygon fill="#255000" stroke="#255000" points="110.62,-15.5 120.62,-12 110.62,-8.5 110.62,-15.5"/>
+</g>
+</g>
+</svg>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="597pt" height="32pt"
+ viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node4" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
+<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
+<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Called by</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: proc~~excj~~CalledByGraph Pages: 1 -->
+<svg id="procexcjCalledByGraph" width="641pt" height="32pt"
+ viewBox="0.00 0.00 641.00 31.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~excj~~CalledByGraph" class="graph" transform="scale(0.99 0.99) rotate(0) translate(4 28)">
+<title>proc~~excj~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 641,-28 641,4 -4,4"/>
+<!-- proc~excj -->
+<g id="proc~~excj~~CalledByGraph_node1" class="node">
+<title>proc~excj</title>
+<polygon fill="none" stroke="black" points="637,-24 552,-24 552,0 637,0 637,-24"/>
+<text text-anchor="middle" x="594.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">modmpi::excj</text>
+</g>
+<!-- proc~bcp -->
+<g id="proc~~excj~~CalledByGraph_node2" class="node">
+<title>proc~bcp</title>
+<g id="a_proc~~excj~~CalledByGraph_node2"><a xlink:href=".././proc/bcp.html" xlink:title="modboundary::bcp">
+<polygon fill="#d9534f" stroke="#d9534f" points="516,-24 402,-24 402,0 516,0 516,-24"/>
+<text text-anchor="middle" x="459" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modboundary::bcp</text>
+</a>
+</g>
+</g>
+<!-- proc~bcp&#45;&gt;proc~excj -->
+<g id="proc~~excj~~CalledByGraph_edge1" class="edge">
+<title>proc~bcp&#45;&gt;proc~excj</title>
+<path fill="none" stroke="#255000" d="M516.23,-12C524.74,-12 533.49,-12 541.89,-12"/>
+<polygon fill="#255000" stroke="#255000" points="541.94,-15.5 551.94,-12 541.94,-8.5 541.94,-15.5"/>
+</g>
+<!-- proc~tderive -->
+<g id="proc~~excj~~CalledByGraph_node3" class="node">
+<title>proc~tderive</title>
+<g id="a_proc~~excj~~CalledByGraph_node3"><a xlink:href=".././proc/tderive.html" xlink:title="modpois::tderive">
+<polygon fill="#d9534f" stroke="#d9534f" points="366,-24 263,-24 263,0 366,0 366,-24"/>
+<text text-anchor="middle" x="314.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modpois::tderive</text>
+</a>
+</g>
+</g>
+<!-- proc~tderive&#45;&gt;proc~bcp -->
+<g id="proc~~excj~~CalledByGraph_edge2" class="edge">
+<title>proc~tderive&#45;&gt;proc~bcp</title>
+<path fill="none" stroke="#255000" d="M366.14,-12C374.42,-12 383.11,-12 391.7,-12"/>
+<polygon fill="#255000" stroke="#255000" points="391.71,-15.5 401.71,-12 391.71,-8.5 391.71,-15.5"/>
+</g>
+<!-- proc~poisson -->
+<g id="proc~~excj~~CalledByGraph_node4" class="node">
+<title>proc~poisson</title>
+<g id="a_proc~~excj~~CalledByGraph_node4"><a xlink:href=".././proc/poisson.html" xlink:title="modpois::poisson">
+<polygon fill="#d9534f" stroke="#d9534f" points="227,-24 121,-24 121,0 227,0 227,-24"/>
+<text text-anchor="middle" x="174" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modpois::poisson</text>
+</a>
+</g>
+</g>
+<!-- proc~poisson&#45;&gt;proc~tderive -->
+<g id="proc~~excj~~CalledByGraph_edge3" class="edge">
+<title>proc~poisson&#45;&gt;proc~tderive</title>
+<path fill="none" stroke="#255000" d="M227.36,-12C235.64,-12 244.26,-12 252.71,-12"/>
+<polygon fill="#255000" stroke="#255000" points="252.9,-15.5 262.9,-12 252.9,-8.5 252.9,-15.5"/>
+</g>
+<!-- program~dalesurban -->
+<g id="proc~~excj~~CalledByGraph_node5" class="node">
+<title>program~dalesurban</title>
+<g id="a_proc~~excj~~CalledByGraph_node5"><a xlink:href=".././program/dalesurban.html" xlink:title="DALESURBAN">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="85,-24 0,-24 0,0 85,0 85,-24"/>
+<text text-anchor="middle" x="42.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">DALESURBAN</text>
+</a>
+</g>
+</g>
+<!-- program~dalesurban&#45;&gt;proc~poisson -->
+<g id="proc~~excj~~CalledByGraph_edge4" class="edge">
+<title>program~dalesurban&#45;&gt;proc~poisson</title>
+<path fill="none" stroke="#255000" d="M85.19,-12C93.37,-12 102.12,-12 110.81,-12"/>
+<polygon fill="#255000" stroke="#255000" points="110.94,-15.5 120.94,-12 110.94,-8.5 110.94,-15.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocexcjCalledByGraph = svgPanZoom('#procexcjCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="597pt" height="32pt"
+ viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node4" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
+<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
+<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+        <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/excj.html#src">excj</a>
+      </div>
+    </div>
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+
+    
+    
+
+    
+    
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span><span class="w">  </span><span class="k">subroutine </span><span class="n">excj</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">sx</span><span class="p">,</span><span class="w"> </span><span class="n">ex</span><span class="p">,</span><span class="w"> </span><span class="n">sy</span><span class="p">,</span><span class="w"> </span><span class="n">ey</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="n">ez</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">  </span><span class="kt">integer </span><span class="n">sx</span><span class="p">,</span><span class="w"> </span><span class="n">ex</span><span class="p">,</span><span class="w"> </span><span class="n">sy</span><span class="p">,</span><span class="w"> </span><span class="n">ey</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">,</span><span class="w"> </span><span class="n">ez</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real </span><span class="n">a</span><span class="p">(</span><span class="n">sx</span><span class="p">:</span><span class="n">ex</span><span class="p">,</span><span class="w"> </span><span class="n">sy</span><span class="p">:</span><span class="n">ey</span><span class="p">,</span><span class="w"> </span><span class="n">sz</span><span class="p">:</span><span class="n">ez</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer </span><span class="n">iiget</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">(</span><span class="n">MPI_STATUS_SIZE</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="kt">integer </span><span class="n">ii</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"></span>
+<span class="w">  </span><span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span><span class="p">,</span><span class="w"> </span><span class="k">dimension</span><span class="p">(:)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">buffj1</span><span class="p">,</span><span class="n">buffj2</span><span class="p">,</span><span class="n">buffj3</span><span class="p">,</span><span class="n">buffj4</span><span class="w"></span>
+<span class="w">  </span><span class="n">iiget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ez</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">allocate</span><span class="p">(</span><span class="w"> </span><span class="n">buffj1</span><span class="p">(</span><span class="n">iiget</span><span class="p">),&amp;</span><span class="w"></span>
+<span class="w">            </span><span class="n">buffj2</span><span class="p">(</span><span class="n">iiget</span><span class="p">),&amp;</span><span class="w"></span>
+<span class="w">            </span><span class="n">buffj3</span><span class="p">(</span><span class="n">iiget</span><span class="p">),&amp;</span><span class="w"></span>
+<span class="w">            </span><span class="n">buffj4</span><span class="p">(</span><span class="n">iiget</span><span class="p">))</span><span class="w"></span>
+
+
+
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">nbrtop</span><span class="o">/=</span><span class="n">MPI_PROC_NULL</span><span class="p">)</span><span class="k">then</span>
+<span class="k">    do </span><span class="n">k</span><span class="o">=</span><span class="n">sz</span><span class="p">,</span><span class="n">ez</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span><span class="n">ex</span><span class="w"></span>
+<span class="w">      </span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">buffj1</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">ey</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    enddo</span>
+<span class="k">  endif</span>
+<span class="k">  call </span><span class="n">MPI_SENDRECV</span><span class="p">(</span><span class="w">  </span><span class="n">buffj1</span><span class="p">,</span><span class="w">  </span><span class="n">ii</span><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">MY_REAL</span><span class="p">,</span><span class="w"> </span><span class="n">nbrtop</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">buffj2</span><span class="p">,</span><span class="w">  </span><span class="n">iiget</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">MY_REAL</span><span class="p">,</span><span class="w"> </span><span class="n">nbrbottom</span><span class="p">,</span><span class="w">  </span><span class="mi">4</span><span class="p">,</span><span class="w">      </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">comm3d</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">mpierr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">nbrbottom</span><span class="o">/=</span><span class="n">MPI_PROC_NULL</span><span class="p">)</span><span class="k">then</span>
+<span class="k">    do </span><span class="n">k</span><span class="o">=</span><span class="n">sz</span><span class="p">,</span><span class="n">ez</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span><span class="n">ex</span><span class="w"></span>
+<span class="w">      </span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">a</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">sy</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffj2</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    enddo</span>
+<span class="k">  endif</span><span class="w"></span>
+
+<span class="c">!   call barrou()</span>
+
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">nbrbottom</span><span class="o">/=</span><span class="n">MPI_PROC_NULL</span><span class="p">)</span><span class="k">then</span>
+<span class="k">    do </span><span class="n">k</span><span class="o">=</span><span class="n">sz</span><span class="p">,</span><span class="n">ez</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span><span class="n">ex</span><span class="w"></span>
+<span class="w">      </span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">buffj3</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">sy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    enddo</span>
+<span class="k">  endif</span>
+<span class="k">  call </span><span class="n">MPI_SENDRECV</span><span class="p">(</span><span class="w">  </span><span class="n">buffj3</span><span class="p">,</span><span class="w">  </span><span class="n">ii</span><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="n">MY_REAL</span><span class="p">,</span><span class="w"> </span><span class="n">nbrbottom</span><span class="p">,</span><span class="w">  </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                          </span><span class="n">buffj4</span><span class="p">,</span><span class="w">  </span><span class="n">iiget</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">MY_REAL</span><span class="p">,</span><span class="w"> </span><span class="n">nbrtop</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                          </span><span class="n">comm3d</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">mpierr</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">nbrtop</span><span class="o">/=</span><span class="n">MPI_PROC_NULL</span><span class="p">)</span><span class="k">then</span>
+<span class="k">    do </span><span class="n">k</span><span class="o">=</span><span class="n">sz</span><span class="p">,</span><span class="n">ez</span><span class="w"></span>
+<span class="w">    </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span><span class="n">ex</span><span class="w"></span>
+<span class="w">      </span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sz</span><span class="w"> </span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">a</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">ey</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffj4</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">enddo</span>
+<span class="k">    enddo</span>
+<span class="k">  endif</span><span class="w"></span>
+
+<span class="c">!   call barrou()</span>
+<span class="w">  </span><span class="k">deallocate</span><span class="w"> </span><span class="p">(</span><span class="n">buffj1</span><span class="p">,</span><span class="n">buffj2</span><span class="p">,</span><span class="n">buffj3</span><span class="p">,</span><span class="n">buffj4</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="k">return</span>
+<span class="k">  end subroutine </span><span class="n">excj</span><span class="w"></span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6"><p>uDALES was developed by The uDALES Team<br>&copy; 2023 
+</p>
+          </div>
+          <div class="col-xs-6 col-md-6">
+            <p class="text-right">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2023-05-30 17:12              </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+         ================================================== -->
+         <!-- Placed at the end of the document so the pages load faster -->
+    <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        -->
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- MathJax JavaScript
+             ================================================== -->
+             <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+          });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+          <script src="../tipuesearch/tipuesearch_content.js"></script>
+          <script src="../tipuesearch/tipuesearch_set.js"></script>
+          <script src="../tipuesearch/tipuesearch.js"></script>
+
+  </body>
+</html>

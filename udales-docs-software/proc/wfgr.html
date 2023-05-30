@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Documentation for uDALES">
+    <meta name="author" content="The uDALES Team" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>wfGR &ndash; uDALES</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+         <script src="../js/jquery-2.1.3.min.js"></script>
+         <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">uDALES </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+                 data-toggle="dropdown" role="button"
+                 aria-haspopup="true"
+                 aria-expanded="false">
+                 Contents <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                    <li><a href="../lists/files.html">Source Files</a></li>
+                  <li><a href="../lists/modules.html">Modules</a></li>
+                  <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/types.html">Derived Types</a></li>
+                  <li><a href="../program/dalesurban.html">Program</a></li>
+              </ul>
+            </li>
+                <li class="visible-xs hidden-sm visible-lg">
+                  <a href="../lists/files.html">Source Files</a>
+                </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/modules.html">Modules</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/types.html">Derived Types</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../program/dalesurban.html">Program</a>
+              </li>
+          </ul>
+            <form action="../search.html" class="navbar-form navbar-right" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+              </div>
+              <!--
+                  <button type="submit" class="btn btn-default">Submit</button>
+                  -->
+            </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+  <div class="row">
+    <h1>wfGR
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="row" id="info-bar">
+    <div class="col-lg-12">
+      <div class="well well-sm">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+          <li id="statements"><i class="fa fa-list-ol"></i>
+            <a data-toggle="tooltip"
+               data-placement="bottom" data-html="true"
+               title=" 0.9% of total for procedures.">112 statements</a>
+          </li>
+
+            <li id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/wf_gr.f90"> Source File</a>
+            </li>
+        </ul>
+        <ol class="breadcrumb in-well text-right">
+              <li><a href='../sourcefile/wf_gr.f90.html'>wf_gr.f90</a></li>
+          <li class="active">wfGR</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/wfgr.html#src">wfGR</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2> subroutine wfGR(hi, hj, hk, ioq, ioqflux, icth, obcqfluxA, qcell, qwall, hurel, resc, ress, n, ind, wforient)  
+</h2>
+        <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+            <ul class="list-inline">
+                <li><a href='../module/modibmdata.html'>modibmdata</a></li>
+                <li><a href='../module/modsubgriddata.html'>modsubgriddata</a></li>
+                <li><a href='../module/modmpi.html'>modmpi</a></li>
+                <li><a href='../module/initfac.html'>initfac</a></li>
+                <li><a href='../module/modglobal.html'>modglobal</a></li>
+            </ul>
+          </li>
+          <li class="list-group-item">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: proc~~wfgr~~UsesGraph Pages: 1 -->
+<svg id="procwfgrUsesGraph" width="435pt" height="194pt"
+ viewBox="0.00 0.00 435.00 194.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~wfgr~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 190)">
+<title>proc~~wfgr~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-190 431,-190 431,4 -4,4"/>
+<!-- proc~wfgr -->
+<g id="proc~~wfgr~~UsesGraph_node1" class="node">
+<title>proc~wfgr</title>
+<polygon fill="none" stroke="black" points="427,-104 332,-104 332,-80 427,-80 427,-104"/>
+<text text-anchor="middle" x="379.5" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50">wf_gr.f90::wfGR</text>
+</g>
+<!-- module~initfac -->
+<g id="proc~~wfgr~~UsesGraph_node2" class="node">
+<title>module~initfac</title>
+<g id="a_proc~~wfgr~~UsesGraph_node2"><a xlink:href=".././module/initfac.html" xlink:title="initfac">
+<polygon fill="#337ab7" stroke="#337ab7" points="273,-146 219,-146 219,-122 273,-122 273,-146"/>
+<text text-anchor="middle" x="246" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">initfac</text>
+</a>
+</g>
+</g>
+<!-- proc~wfgr&#45;&gt;module~initfac -->
+<g id="proc~~wfgr~~UsesGraph_edge1" class="edge">
+<title>proc~wfgr&#45;&gt;module~initfac</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M340.82,-104.04C322.5,-109.88 300.61,-116.88 282.58,-122.63"/>
+<polygon fill="#255000" stroke="#255000" points="281.47,-119.31 273.01,-125.69 283.6,-125.98 281.47,-119.31"/>
+</g>
+<!-- module~modglobal -->
+<g id="proc~~wfgr~~UsesGraph_node3" class="node">
+<title>module~modglobal</title>
+<g id="a_proc~~wfgr~~UsesGraph_node3"><a xlink:href=".././module/modglobal.html" xlink:title="modglobal">
+<polygon fill="#337ab7" stroke="#337ab7" points="160,-186 90,-186 90,-162 160,-162 160,-186"/>
+<text text-anchor="middle" x="125" y="-171.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modglobal</text>
+</a>
+</g>
+</g>
+<!-- proc~wfgr&#45;&gt;module~modglobal -->
+<g id="proc~~wfgr~~UsesGraph_edge2" class="edge">
+<title>proc~wfgr&#45;&gt;module~modglobal</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M366.97,-104.17C352.12,-118.98 324.77,-143.45 296,-155 255.66,-171.19 205.88,-175.08 170.64,-175.44"/>
+<polygon fill="#255000" stroke="#255000" points="170.19,-171.94 160.2,-175.45 170.2,-178.94 170.19,-171.94"/>
+</g>
+<!-- module~modibmdata -->
+<g id="proc~~wfgr~~UsesGraph_node4" class="node">
+<title>module~modibmdata</title>
+<g id="a_proc~~wfgr~~UsesGraph_node4"><a xlink:href=".././module/modibmdata.html" xlink:title="modibmdata">
+<polygon fill="#337ab7" stroke="#337ab7" points="286.5,-104 205.5,-104 205.5,-80 286.5,-80 286.5,-104"/>
+<text text-anchor="middle" x="246" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modibmdata</text>
+</a>
+</g>
+</g>
+<!-- proc~wfgr&#45;&gt;module~modibmdata -->
+<g id="proc~~wfgr~~UsesGraph_edge3" class="edge">
+<title>proc~wfgr&#45;&gt;module~modibmdata</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M331.77,-92C320.46,-92 308.34,-92 296.9,-92"/>
+<polygon fill="#255000" stroke="#255000" points="296.62,-88.5 286.62,-92 296.62,-95.5 296.62,-88.5"/>
+</g>
+<!-- module~modmpi -->
+<g id="proc~~wfgr~~UsesGraph_node5" class="node">
+<title>module~modmpi</title>
+<g id="a_proc~~wfgr~~UsesGraph_node5"><a xlink:href=".././module/modmpi.html" xlink:title="modmpi">
+<polygon fill="#337ab7" stroke="#337ab7" points="153.5,-83 96.5,-83 96.5,-59 153.5,-59 153.5,-83"/>
+<text text-anchor="middle" x="125" y="-68.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modmpi</text>
+</a>
+</g>
+</g>
+<!-- proc~wfgr&#45;&gt;module~modmpi -->
+<g id="proc~~wfgr~~UsesGraph_edge4" class="edge">
+<title>proc~wfgr&#45;&gt;module~modmpi</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M339.44,-79.93C325.83,-76.3 310.37,-72.8 296,-71 250.75,-65.33 198.19,-66.51 163.63,-68.33"/>
+<polygon fill="#255000" stroke="#255000" points="163.3,-64.84 153.51,-68.91 163.7,-71.83 163.3,-64.84"/>
+</g>
+<!-- module~modsubgriddata -->
+<g id="proc~~wfgr~~UsesGraph_node6" class="node">
+<title>module~modsubgriddata</title>
+<g id="a_proc~~wfgr~~UsesGraph_node6"><a xlink:href=".././module/modsubgriddata.html" xlink:title="modsubgriddata">
+<polygon fill="#337ab7" stroke="#337ab7" points="296,-24 196,-24 196,0 296,0 296,-24"/>
+<text text-anchor="middle" x="246" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modsubgriddata</text>
+</a>
+</g>
+</g>
+<!-- proc~wfgr&#45;&gt;module~modsubgriddata -->
+<g id="proc~~wfgr~~UsesGraph_edge5" class="edge">
+<title>proc~wfgr&#45;&gt;module~modsubgriddata</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M361.09,-79.94C344.6,-68.67 318.99,-51.59 296,-38 290.79,-34.92 285.2,-31.79 279.71,-28.82"/>
+<polygon fill="#255000" stroke="#255000" points="281.14,-25.62 270.67,-24 277.85,-31.79 281.14,-25.62"/>
+</g>
+<!-- module~initfac&#45;&gt;module~modglobal -->
+<g id="proc~~wfgr~~UsesGraph_edge6" class="edge">
+<title>module~initfac&#45;&gt;module~modglobal</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M218.88,-142.78C204.47,-147.62 186.2,-153.77 169.67,-159.32"/>
+<polygon fill="#255000" stroke="#255000" points="168.56,-156 160.19,-162.51 170.79,-162.64 168.56,-156"/>
+</g>
+<!-- module~initfac&#45;&gt;module~modmpi -->
+<g id="proc~~wfgr~~UsesGraph_edge7" class="edge">
+<title>module~initfac&#45;&gt;module~modmpi</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M218.76,-123.53C211.31,-120.35 203.25,-116.71 196,-113 181.58,-105.63 166.09,-96.47 153.35,-88.59"/>
+<polygon fill="#255000" stroke="#255000" points="154.95,-85.46 144.62,-83.12 151.24,-91.39 154.95,-85.46"/>
+</g>
+<!-- netcdf -->
+<g id="proc~~wfgr~~UsesGraph_node8" class="node">
+<title>netcdf</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="152,-144 98,-144 98,-120 152,-120 152,-144"/>
+<text text-anchor="middle" x="125" y="-129.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">netcdf</text>
+</g>
+<!-- module~initfac&#45;&gt;netcdf -->
+<g id="proc~~wfgr~~UsesGraph_edge8" class="edge">
+<title>module~initfac&#45;&gt;netcdf</title>
+<path fill="none" stroke="#255000" stroke-dasharray="5,2" d="M218.88,-133.56C202.22,-133.28 180.39,-132.91 162.08,-132.61"/>
+<polygon fill="#255000" stroke="#255000" points="162.11,-129.11 152.05,-132.44 161.99,-136.11 162.11,-129.11"/>
+</g>
+<!-- mpi -->
+<g id="proc~~wfgr~~UsesGraph_node7" class="node">
+<title>mpi</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-83 0,-83 0,-59 54,-59 54,-83"/>
+<text text-anchor="middle" x="27" y="-68.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">mpi</text>
+</g>
+<!-- module~modmpi&#45;&gt;mpi -->
+<g id="proc~~wfgr~~UsesGraph_edge9" class="edge">
+<title>module~modmpi&#45;&gt;mpi</title>
+<path fill="none" stroke="#010225" stroke-dasharray="5,2" stroke-opacity="0.019608" d="M96.49,-71C86.52,-71 75.09,-71 64.47,-71"/>
+<polygon fill="#010225" fill-opacity="0.019608" stroke="#010225" stroke-opacity="0.019608" points="64.19,-67.5 54.19,-71 64.19,-74.5 64.19,-67.5"/>
+</g>
+</g>
+</svg>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+          </li>
+      </ul>
+    </div>
+
+
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hi~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hi</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hj~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hj</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hk~4"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hk</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ioq"></span>
+              real,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ioq</strong>(ib-hi:ie+hi,jb-hj:je+hj,kb:ke+hk)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ioqflux"></span>
+              real,
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ioqflux</strong>(ib-hi:ie+hi,jb-hj:je+hj,kb-hk:ke+hk)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-icth"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>icth</strong>(ib-hi:ie+hi,jb-hj:je+hj,kb-hk:ke+hk)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-obcqfluxa"></span>
+              real,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>obcqfluxA</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-qcell"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>qcell</strong>(ib-hi:ie+hi,jb-hj:je+hj,kb-hk:ke+hk)</td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-qwall"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>qwall</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hurel"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hurel</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-resc"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>resc</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ress"></span>
+              real,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ress</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ind~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ind</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-wforient~3"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>wforient</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Called by</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: proc~~wfgr~~CalledByGraph Pages: 1 -->
+<svg id="procwfgrCalledByGraph" width="549pt" height="158pt"
+ viewBox="0.00 0.00 549.00 158.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~wfgr~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 154)">
+<title>proc~~wfgr~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-154 545,-154 545,4 -4,4"/>
+<!-- proc~wfgr -->
+<g id="proc~~wfgr~~CalledByGraph_node1" class="node">
+<title>proc~wfgr</title>
+<polygon fill="none" stroke="black" points="541,-87 446,-87 446,-63 541,-63 541,-87"/>
+<text text-anchor="middle" x="493.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50">wf_gr.f90::wfGR</text>
+</g>
+<!-- proc~xwallfun -->
+<g id="proc~~wfgr~~CalledByGraph_node2" class="node">
+<title>proc~xwallfun</title>
+<g id="a_proc~~wfgr~~CalledByGraph_node2"><a xlink:href=".././proc/xwallfun.html" xlink:title="modibm::xwallfun">
+<polygon fill="#d9534f" stroke="#d9534f" points="399.5,-150 290.5,-150 290.5,-126 399.5,-126 399.5,-150"/>
+<text text-anchor="middle" x="345" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modibm::xwallfun</text>
+</a>
+</g>
+</g>
+<!-- proc~xwallfun&#45;&gt;proc~wfgr -->
+<g id="proc~~wfgr~~CalledByGraph_edge1" class="edge">
+<title>proc~xwallfun&#45;&gt;proc~wfgr</title>
+<path fill="none" stroke="#255000" d="M385.95,-125.94C394,-123.22 402.33,-120.19 410,-117 427.57,-109.69 446.54,-100.16 461.86,-92.02"/>
+<polygon fill="#255000" stroke="#255000" points="463.73,-94.99 470.87,-87.17 460.41,-88.83 463.73,-94.99"/>
+</g>
+<!-- proc~ywallfunmin -->
+<g id="proc~~wfgr~~CalledByGraph_node3" class="node">
+<title>proc~ywallfunmin</title>
+<g id="a_proc~~wfgr~~CalledByGraph_node3"><a xlink:href=".././proc/ywallfunmin.html" xlink:title="modibm::ywallfunmin">
+<polygon fill="#d9534f" stroke="#d9534f" points="409.5,-108 280.5,-108 280.5,-84 409.5,-84 409.5,-108"/>
+<text text-anchor="middle" x="345" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modibm::ywallfunmin</text>
+</a>
+</g>
+</g>
+<!-- proc~ywallfunmin&#45;&gt;proc~wfgr -->
+<g id="proc~~wfgr~~CalledByGraph_edge2" class="edge">
+<title>proc~ywallfunmin&#45;&gt;proc~wfgr</title>
+<path fill="none" stroke="#255000" d="M409.83,-86.85C418.38,-85.62 427.11,-84.37 435.53,-83.17"/>
+<polygon fill="#255000" stroke="#255000" points="436.22,-86.6 445.62,-81.72 435.23,-79.67 436.22,-86.6"/>
+</g>
+<!-- proc~ywallfunplus -->
+<g id="proc~~wfgr~~CalledByGraph_node4" class="node">
+<title>proc~ywallfunplus</title>
+<g id="a_proc~~wfgr~~CalledByGraph_node4"><a xlink:href=".././proc/ywallfunplus.html" xlink:title="modibm::ywallfunplus">
+<polygon fill="#d9534f" stroke="#d9534f" points="410,-66 280,-66 280,-42 410,-42 410,-66"/>
+<text text-anchor="middle" x="345" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modibm::ywallfunplus</text>
+</a>
+</g>
+</g>
+<!-- proc~ywallfunplus&#45;&gt;proc~wfgr -->
+<g id="proc~~wfgr~~CalledByGraph_edge3" class="edge">
+<title>proc~ywallfunplus&#45;&gt;proc~wfgr</title>
+<path fill="none" stroke="#255000" d="M410.26,-63.21C418.78,-64.43 427.48,-65.68 435.86,-66.88"/>
+<polygon fill="#255000" stroke="#255000" points="435.51,-70.37 445.9,-68.32 436.5,-63.44 435.51,-70.37"/>
+</g>
+<!-- proc~zwallfun -->
+<g id="proc~~wfgr~~CalledByGraph_node5" class="node">
+<title>proc~zwallfun</title>
+<g id="a_proc~~wfgr~~CalledByGraph_node5"><a xlink:href=".././proc/zwallfun.html" xlink:title="modibm::zwallfun">
+<polygon fill="#d9534f" stroke="#d9534f" points="399,-24 291,-24 291,0 399,0 399,-24"/>
+<text text-anchor="middle" x="345" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modibm::zwallfun</text>
+</a>
+</g>
+</g>
+<!-- proc~zwallfun&#45;&gt;proc~wfgr -->
+<g id="proc~~wfgr~~CalledByGraph_edge4" class="edge">
+<title>proc~zwallfun&#45;&gt;proc~wfgr</title>
+<path fill="none" stroke="#255000" d="M385.95,-24.06C394,-26.78 402.33,-29.81 410,-33 427.57,-40.31 446.54,-49.84 461.86,-57.98"/>
+<polygon fill="#255000" stroke="#255000" points="460.41,-61.17 470.87,-62.83 463.73,-55.01 460.41,-61.17"/>
+</g>
+<!-- proc~ibmwallfun -->
+<g id="proc~~wfgr~~CalledByGraph_node6" class="node">
+<title>proc~ibmwallfun</title>
+<g id="a_proc~~wfgr~~CalledByGraph_node6"><a xlink:href=".././proc/ibmwallfun.html" xlink:title="modibm::ibmwallfun">
+<polygon fill="#d9534f" stroke="#d9534f" points="244,-87 121,-87 121,-63 244,-63 244,-87"/>
+<text text-anchor="middle" x="182.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">modibm::ibmwallfun</text>
+</a>
+</g>
+</g>
+<!-- proc~ibmwallfun&#45;&gt;proc~xwallfun -->
+<g id="proc~~wfgr~~CalledByGraph_edge5" class="edge">
+<title>proc~ibmwallfun&#45;&gt;proc~xwallfun</title>
+<path fill="none" stroke="#255000" d="M209.44,-87.08C228.71,-95.86 255.75,-107.77 280,-117 285.05,-118.92 290.37,-120.84 295.69,-122.68"/>
+<polygon fill="#255000" stroke="#255000" points="294.62,-126.02 305.21,-125.92 296.87,-119.39 294.62,-126.02"/>
+</g>
+<!-- proc~ibmwallfun&#45;&gt;proc~ywallfunmin -->
+<g id="proc~~wfgr~~CalledByGraph_edge6" class="edge">
+<title>proc~ibmwallfun&#45;&gt;proc~ywallfunmin</title>
+<path fill="none" stroke="transparent" d="M244.18,-82.94C252.66,-84.05 261.46,-85.2 270.16,-86.34"/>
+<polygon fill="transparent" stroke="transparent" points="269.92,-89.84 280.29,-87.66 270.83,-82.9 269.92,-89.84"/>
+</g>
+<!-- proc~ibmwallfun&#45;&gt;proc~ywallfunplus -->
+<g id="proc~~wfgr~~CalledByGraph_edge7" class="edge">
+<title>proc~ibmwallfun&#45;&gt;proc~ywallfunplus</title>
+<path fill="none" stroke="#025525" stroke-opacity="0.019608" d="M244.18,-67.06C252.54,-65.97 261.2,-64.83 269.76,-63.71"/>
+<polygon fill="#025525" fill-opacity="0.019608" stroke="#025525" stroke-opacity="0.019608" points="270.3,-67.17 279.76,-62.41 269.39,-60.23 270.3,-67.17"/>
+</g>
+<!-- proc~ibmwallfun&#45;&gt;proc~zwallfun -->
+<g id="proc~~wfgr~~CalledByGraph_edge8" class="edge">
+<title>proc~ibmwallfun&#45;&gt;proc~zwallfun</title>
+<path fill="none" stroke="#127025" stroke-opacity="0.019608" d="M209.44,-62.92C228.71,-54.14 255.75,-42.23 280,-33 285.05,-31.08 290.37,-29.16 295.69,-27.32"/>
+<polygon fill="#127025" fill-opacity="0.019608" stroke="#127025" stroke-opacity="0.019608" points="296.87,-30.61 305.21,-24.08 294.62,-23.98 296.87,-30.61"/>
+</g>
+<!-- program~dalesurban -->
+<g id="proc~~wfgr~~CalledByGraph_node7" class="node">
+<title>program~dalesurban</title>
+<g id="a_proc~~wfgr~~CalledByGraph_node7"><a xlink:href=".././program/dalesurban.html" xlink:title="DALESURBAN">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="85,-87 0,-87 0,-63 85,-63 85,-87"/>
+<text text-anchor="middle" x="42.5" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">DALESURBAN</text>
+</a>
+</g>
+</g>
+<!-- program~dalesurban&#45;&gt;proc~ibmwallfun -->
+<g id="proc~~wfgr~~CalledByGraph_edge9" class="edge">
+<title>program~dalesurban&#45;&gt;proc~ibmwallfun</title>
+<path fill="none" stroke="#255000" d="M85.28,-75C93.32,-75 101.95,-75 110.61,-75"/>
+<polygon fill="#255000" stroke="#255000" points="110.77,-78.5 120.77,-75 110.77,-71.5 110.77,-78.5"/>
+</g>
+</g>
+</svg>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.50.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="597pt" height="32pt"
+ viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node4" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
+<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
+<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ Where possible, edges connecting nodes are
+given different colours to make them easier to distinguish in
+large graphs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+        <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/wfgr.html#src">wfGR</a>
+      </div>
+    </div>
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+
+    
+    
+
+    
+    
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span><span class="k">SUBROUTINE </span><span class="n">wfGR</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span><span class="n">hj</span><span class="p">,</span><span class="n">hk</span><span class="p">,</span><span class="n">ioq</span><span class="p">,</span><span class="n">ioqflux</span><span class="p">,</span><span class="n">icth</span><span class="p">,</span><span class="n">obcqfluxA</span><span class="p">,</span><span class="n">qcell</span><span class="p">,</span><span class="n">qwall</span><span class="p">,</span><span class="n">hurel</span><span class="p">,</span><span class="n">resc</span><span class="p">,</span><span class="n">ress</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">ind</span><span class="p">,</span><span class="n">wforient</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="c">!wfGR</span>
+<span class="w">   </span><span class="k">USE </span><span class="n">modglobal</span><span class="p">,</span><span class="w"> </span><span class="k">ONLY</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">dzf</span><span class="p">,</span><span class="n">dzfi</span><span class="p">,</span><span class="n">dzh2i</span><span class="p">,</span><span class="n">dzhi</span><span class="p">,</span><span class="n">dzhiq</span><span class="p">,</span><span class="n">dy</span><span class="p">,</span><span class="n">dyi</span><span class="p">,</span><span class="n">dy2i</span><span class="p">,</span><span class="n">dyi5</span><span class="p">,</span><span class="n">dxf</span><span class="p">,</span><span class="n">dxh</span><span class="p">,</span><span class="n">dxfi</span><span class="p">,</span><span class="n">dxhi</span><span class="p">,</span><span class="n">dxh2i</span><span class="p">,</span><span class="n">ib</span><span class="p">,</span><span class="n">ie</span><span class="p">,</span><span class="n">jb</span><span class="p">,</span><span class="n">je</span><span class="p">,</span><span class="n">kb</span><span class="p">,</span><span class="n">ke</span><span class="p">,</span><span class="n">fkar</span><span class="p">,</span><span class="n">grav</span><span class="p">,</span><span class="n">jmax</span><span class="p">,</span><span class="n">rk3step</span><span class="w"></span>
+<span class="w">   </span><span class="k">USE </span><span class="n">modsubgriddata</span><span class="p">,</span><span class="w"> </span><span class="k">ONLY</span><span class="p">:</span><span class="n">ekh</span><span class="w"></span>
+<span class="w">   </span><span class="k">USE </span><span class="n">modmpi</span><span class="p">,</span><span class="w"> </span><span class="k">ONLY</span><span class="p">:</span><span class="n">myid</span><span class="w"></span>
+<span class="w">   </span><span class="k">USE </span><span class="n">initfac</span><span class="p">,</span><span class="w"> </span><span class="k">ONLY</span><span class="p">:</span><span class="k">block</span>
+<span class="k">   USE </span><span class="n">modibmdata</span><span class="w"></span>
+<span class="w">   </span><span class="kt">INTEGER </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">jl</span><span class="p">,</span><span class="w"> </span><span class="n">ju</span><span class="p">,</span><span class="w"> </span><span class="n">kl</span><span class="p">,</span><span class="w"> </span><span class="n">ku</span><span class="p">,</span><span class="w"> </span><span class="n">il</span><span class="p">,</span><span class="w"> </span><span class="n">iu</span><span class="p">,</span><span class="w"> </span><span class="n">km</span><span class="p">,</span><span class="w"> </span><span class="n">im</span><span class="p">,</span><span class="w"> </span><span class="n">jm</span><span class="p">,</span><span class="w"> </span><span class="n">ip</span><span class="p">,</span><span class="w"> </span><span class="n">jp</span><span class="p">,</span><span class="w"> </span><span class="n">kp</span><span class="w"></span>
+
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">bcqflux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w"> </span><span class="c">!temp storage for temperature flux</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">bcmomflux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w"> </span><span class="c">!temp storage for momentum flux</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dummy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w"> </span><span class="c">!for debugging</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w"> </span><span class="c">!distance from wall</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fkar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fkar</span><span class="o">**</span><span class="mi">2</span><span class="w"> </span><span class="c">!fkar^2, von Karman constant squared</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">emmo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">epmo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">epom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">emom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">eopm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">eomm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="n">empo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w"></span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">umin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0001</span><span class="w"> </span><span class="c">!m^2/s^2</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cveg</span><span class="o">=</span><span class="mf">0.8</span><span class="w"> </span><span class="c">!hardcoded for now, !fraction of GR covered in vegetation, should be made into a proper model parameter (-&gt; modglobal)</span>
+
+<span class="w">   </span><span class="kt">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hi</span><span class="w"> </span><span class="c">!&lt;size of halo in i</span>
+<span class="w">   </span><span class="kt">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hj</span><span class="w"> </span><span class="c">!&lt;size of halo in j</span>
+<span class="w">   </span><span class="kt">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hk</span><span class="w"> </span><span class="c">!&lt;size of halo in k</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">obcqfluxA</span><span class="p">;</span><span class="w"> </span><span class="c">!temperature flux of entire wall facet (double sum over indeces) [Km/s]</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ioq</span><span class="p">(</span><span class="n">ib</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hi</span><span class="p">:</span><span class="n">ie</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hi</span><span class="p">,</span><span class="w"> </span><span class="n">jb</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hj</span><span class="p">:</span><span class="n">je</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hj</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="p">:</span><span class="n">ke</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hk</span><span class="p">)</span><span class="w"> </span><span class="c">!updated prognostic temperature</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">ib</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hi</span><span class="p">:</span><span class="n">ie</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hi</span><span class="p">,</span><span class="w"> </span><span class="n">jb</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hj</span><span class="p">:</span><span class="n">je</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hj</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">-</span><span class="n">hk</span><span class="p">:</span><span class="n">ke</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hk</span><span class="p">)</span><span class="w"> </span><span class="c">!a field to save the momentum flux</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">icth</span><span class="p">(</span><span class="n">ib</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hi</span><span class="p">:</span><span class="n">ie</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hi</span><span class="p">,</span><span class="w"> </span><span class="n">jb</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hj</span><span class="p">:</span><span class="n">je</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hj</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">-</span><span class="n">hk</span><span class="p">:</span><span class="n">ke</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hk</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="c">!heat transfer coefficient, used to calculate moisture flux</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">qcell</span><span class="p">(</span><span class="n">ib</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hi</span><span class="p">:</span><span class="n">ie</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hi</span><span class="p">,</span><span class="w"> </span><span class="n">jb</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hj</span><span class="p">:</span><span class="n">je</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hj</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">hk</span><span class="p">:</span><span class="n">ke</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hk</span><span class="p">)</span><span class="w"> </span><span class="c">!Temperature of fluid cell</span>
+<span class="w">   </span><span class="c">!       real, intent(in)    :: Troof(ib:ie,jb:je,kb:ke)  !Temperature of horizontal surfaces (also includes roads)</span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">qwall</span><span class="w"></span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">hurel</span><span class="w"></span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">resc</span><span class="w"></span>
+<span class="w">   </span><span class="kt">REAL</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">ress</span><span class="w"></span>
+<span class="w">   </span><span class="kt">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="c">! number of the block, used to get i,j,k-indeces</span>
+<span class="w">   </span><span class="kt">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ind</span><span class="w"> </span><span class="c">! in case of y-wall (case 3x &amp; 4x) &quot;ind&quot; is used for j-index, otherwise this is irrelevant</span>
+<span class="w">   </span><span class="kt">INTEGER</span><span class="p">,</span><span class="w"> </span><span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">wforient</span><span class="w"> </span><span class="c">!frist digit, orientation of wall, determines iteration idices and if Twall or Troof is used</span>
+<span class="w">   </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.</span><span class="w"></span>
+<span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CASES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="c">!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CASES FOR SCALARS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">   </span><span class="k">SELECT CASE</span><span class="w"> </span><span class="p">(</span><span class="n">wforient</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">CASE</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="w"> </span><span class="c">!wall in yz -&gt; wf in x (=vertical), lower wall, west wall</span>
+<span class="w">      </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!wall property and fluid index</span>
+<span class="w">      </span><span class="n">ip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!index to remove subgrid flux</span>
+<span class="w">      </span><span class="n">jl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MAX</span><span class="p">(</span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">myid</span><span class="o">*</span><span class="n">jmax</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c">! starting j-index</span>
+<span class="w">      </span><span class="n">ju</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MIN</span><span class="p">(</span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">myid</span><span class="o">*</span><span class="n">jmax</span><span class="p">,</span><span class="w"> </span><span class="n">jmax</span><span class="p">)</span><span class="w"> </span><span class="c">! ending j-index</span>
+<span class="w">      </span><span class="n">kl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="c">! starting k-index</span>
+<span class="w">      </span><span class="n">ku</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="c">! ending k-index</span>
+
+<span class="w">      </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dxf</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="w"> </span><span class="c">!</span>
+<span class="w">      </span><span class="k">DO </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kl</span><span class="p">,</span><span class="w"> </span><span class="n">ku</span><span class="w"></span>
+<span class="w">         </span><span class="k">DO </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jl</span><span class="p">,</span><span class="w"> </span><span class="n">ju</span><span class="w"></span>
+<span class="w">            </span><span class="n">bcqflux</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">cveg</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">resc</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">cveg</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="o">*</span><span class="n">hurel</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">ress</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="w"></span>
+<span class="w">            </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dxfi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w">  </span>
+
+<span class="w">            </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">=</span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">ekh</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">dxf</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">dxf</span><span class="p">(</span><span class="n">ip</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="n">dxh2i</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span><span class="o">*</span><span class="n">dxfi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dxfi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="c">!</span>
+
+<span class="w">         </span><span class="k">END DO</span>
+<span class="k">      END DO</span><span class="w"></span>
+
+<span class="c">!!! case 22 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">   </span><span class="k">CASE</span><span class="w"> </span><span class="p">(</span><span class="mi">22</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!</span>
+<span class="w">      </span><span class="n">im</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!</span>
+<span class="w">      </span><span class="n">jl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MAX</span><span class="p">(</span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">myid</span><span class="o">*</span><span class="n">jmax</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c">! starting j-index</span>
+<span class="w">      </span><span class="n">ju</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MIN</span><span class="p">(</span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">myid</span><span class="o">*</span><span class="n">jmax</span><span class="p">,</span><span class="w"> </span><span class="n">jmax</span><span class="p">)</span><span class="w"> </span><span class="c">! ending j-index</span>
+<span class="w">      </span><span class="n">kl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="c">! starting k-index</span>
+<span class="w">      </span><span class="n">ku</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="c">! ending k-index</span>
+
+<span class="w">      </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dxh</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="w"></span>
+<span class="w">      </span><span class="k">DO </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kl</span><span class="p">,</span><span class="w"> </span><span class="n">ku</span><span class="w"></span>
+<span class="w">         </span><span class="k">DO </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jl</span><span class="p">,</span><span class="w"> </span><span class="n">ju</span><span class="w"></span>
+
+<span class="w">            </span><span class="c">!dq * 1/res, where res is in [s/m]</span>
+<span class="w">            </span><span class="n">bcqflux</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">cveg</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">resc</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">cveg</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="o">*</span><span class="n">hurel</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">ress</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="w"></span>
+<span class="w">            </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dxfi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span>
+
+<span class="w">           </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">dxf</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">+</span><span class="n">ekh</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">dxf</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qcell</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="n">dxh2i</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dxfi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dxfi</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">         </span><span class="k">END DO</span>
+<span class="k">      END DO</span><span class="w"></span>
+<span class="c">!!! case 32 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">   </span><span class="k">CASE</span><span class="w"> </span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="c">!wall in xz -&gt; wf in y (=vertical) upper, north wall</span>
+
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ind</span><span class="w"></span>
+<span class="w">      </span><span class="n">jm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">      </span><span class="n">il</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">iu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">kl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">ku</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">DO </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kl</span><span class="p">,</span><span class="w"> </span><span class="n">ku</span><span class="w"></span>
+<span class="w">         </span><span class="k">DO </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">il</span><span class="p">,</span><span class="w"> </span><span class="n">iu</span><span class="w"></span>
+<span class="w">            </span>
+<span class="w">            </span><span class="n">bcqflux</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">cveg</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">resc</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">cveg</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="o">*</span><span class="n">hurel</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">ress</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="w"></span>
+<span class="w">            </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dyi</span><span class="w">  </span>
+
+<span class="w">            </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                           </span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">jm</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">jm</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)))</span><span class="o">*</span><span class="n">dy2i</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                           </span><span class="o">-</span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dyi</span><span class="w"></span>
+<span class="w">         </span><span class="k">END DO</span>
+<span class="k">      END DO</span><span class="w"></span>
+
+<span class="c">!!! case 42 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">   </span><span class="k">CASE</span><span class="w"> </span><span class="p">(</span><span class="mi">42</span><span class="p">)</span><span class="w"> </span><span class="c">!wall in xz -&gt; wf in y (=vertical) lower, south wall</span>
+
+<span class="w">      </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ind</span><span class="w"></span>
+<span class="w">      </span><span class="n">jp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">      </span><span class="n">il</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">iu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">kl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">ku</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">DO </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kl</span><span class="p">,</span><span class="w"> </span><span class="n">ku</span><span class="w"></span>
+<span class="w">         </span><span class="k">DO </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">il</span><span class="p">,</span><span class="w"> </span><span class="n">iu</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">bcqflux</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">cveg</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">resc</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">cveg</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="o">*</span><span class="n">hurel</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">ress</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="w"></span>
+<span class="w">            </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dyi</span><span class="w"> </span>
+
+<span class="w">            </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                           </span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">jp</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">jp</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">))</span><span class="o">*</span><span class="n">dy2i</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                           </span><span class="o">-</span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dyi</span><span class="w"></span>
+<span class="w">         </span><span class="k">END DO</span>
+<span class="k">      END DO</span><span class="w"></span>
+
+<span class="c">!!! case 52 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span>
+<span class="w">   </span><span class="k">CASE</span><span class="w"> </span><span class="p">(</span><span class="mi">52</span><span class="p">)</span><span class="w"> </span><span class="c">!wall in xy -&gt; wf in z (=horizontal), top wall</span>
+
+<span class="w">      </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!block location</span>
+<span class="w">      </span><span class="n">km</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!</span>
+<span class="w">      </span><span class="n">il</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">iu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">jl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MAX</span><span class="p">(</span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">myid</span><span class="o">*</span><span class="n">jmax</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">ju</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">MIN</span><span class="p">(</span><span class="k">block</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">myid</span><span class="o">*</span><span class="n">jmax</span><span class="p">,</span><span class="w"> </span><span class="n">jmax</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dzf</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="mf">0.5</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">DO </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jl</span><span class="p">,</span><span class="w"> </span><span class="n">ju</span><span class="w"></span>
+<span class="w">         </span><span class="k">DO </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">il</span><span class="p">,</span><span class="w"> </span><span class="n">iu</span><span class="w"></span>
+<span class="w">            </span><span class="n">bcqflux</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="n">cveg</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">resc</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">cveg</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">-</span><span class="n">qwall</span><span class="o">*</span><span class="n">hurel</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">icth</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">+</span><span class="n">ress</span><span class="p">))</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obcqfluxA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="w"></span>
+<span class="w">            </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioqflux</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dzfi</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioq</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                           </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">dzf</span><span class="p">(</span><span class="n">km</span><span class="p">)</span><span class="o">*</span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dzf</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">ekh</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">km</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">qcell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">km</span><span class="p">))</span><span class="o">*</span><span class="n">dzh2i</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">dzfi</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                           </span><span class="o">-</span><span class="w"> </span><span class="n">bcqflux</span><span class="o">*</span><span class="n">dzfi</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">         </span><span class="k">END DO</span>
+<span class="k">      END DO</span>
+<span class="k">END SELECT</span>
+
+<span class="k">END SUBROUTINE </span><span class="n">wfGR</span><span class="w"></span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-md-6"><p>uDALES was developed by The uDALES Team<br>&copy; 2023 
+</p>
+          </div>
+          <div class="col-xs-6 col-md-6">
+            <p class="text-right">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2023-05-30 17:12              </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+         ================================================== -->
+         <!-- Placed at the end of the document so the pages load faster -->
+    <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        -->
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- MathJax JavaScript
+             ================================================== -->
+             <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+          });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+          <script src="../tipuesearch/tipuesearch_content.js"></script>
+          <script src="../tipuesearch/tipuesearch_set.js"></script>
+          <script src="../tipuesearch/tipuesearch.js"></script>
+
+  </body>
+</html>
