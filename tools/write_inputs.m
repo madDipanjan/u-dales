@@ -20,11 +20,13 @@
 % This script is run by the bash script da_inp.sh.
 % It used to generate the necessary input files for uDALES.
 
-expnr = '401';
-ncpus = 2;
+expnr = '453';
+ncpus = 4;
 
-DA_EXPDIR = getenv('DA_EXPDIR');
-DA_TOOLSDIR = getenv('DA_TOOLSDIR');
+%DA_EXPDIR = getenv('DA_EXPDIR');
+%DA_TOOLSDIR = getenv('DA_TOOLSDIR');
+DA_EXPDIR = 'D:\Postdoc1\simulation\tree\experiments';
+DA_TOOLSDIR = 'D:\Postdoc1\simulation\tree\experiments_lingkai';
 addpath([DA_TOOLSDIR '/']);
 exppath = [DA_EXPDIR '/'];
 cd([DA_EXPDIR '/' expnr])
@@ -49,6 +51,13 @@ if r.nsv>0
     preprocessing.generate_scalar(r);
     preprocessing.write_scalar(r);
     disp(['Written scalar.inp.', r.expnr])
+end
+
+if r.ltrees && (r.lcanyons || r.ltreesfile)
+    disp('Generating trees')
+    preprocessing.generate_trees_from_namoptions(r);
+    preprocessing.write_trees(r);
+    disp(['Written trees.inp.', r.expnr])
 end
 
 if ~r.lflat

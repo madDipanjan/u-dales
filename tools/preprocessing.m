@@ -139,20 +139,28 @@ classdef preprocessing < dynamicprops
 
         function set_defaults(obj, ncpus)
             %% &RUN
-            preprocessing.addvar(obj, 'ltrees', 0) % switch for trees (not implemented)
+            preprocessing.addvar(obj, 'ltrees', 0) % switch for trees (not implemented) (isn't it?!)
             if obj.ltrees
-                error('Trees not currently implemented')
-%                 preprocessing.addvar(obj, 'tree_dz',0)
-%                 preprocessing.addvar(obj, 'tree_dx',0)
-%                 preprocessing.addvar(obj, 'tree_h',0)
-%                 preprocessing.addvar(obj, 'tree_w',0)
-%                 preprocessing.addvar(obj, 'tree_b',0)
-%
+%                 error('Trees not currently implemented')
+                % These only work with canyons
+                preprocessing.addvar(obj, 'tree_dz',0) % height above ground
+                preprocessing.addvar(obj, 'tree_dx',0) % distance from building
+                preprocessing.addvar(obj, 'tree_dy',0) % spacing between trees
+                preprocessing.addvar(obj, 'tree_h',0)  % tree height (z)
+                preprocessing.addvar(obj, 'tree_w',0)  % tree width  (x)
+                preprocessing.addvar(obj, 'tree_b',0)  % tree breadth(y)
+% 
 %                 preprocessing.addvar(obj, 'nt1',0)
 %                 preprocessing.addvar(obj, 'md',0)
 %                 preprocessing.addvar(obj, 'ww',0)
 %                 preprocessing.addvar(obj, 'lw',0)
 %                 preprocessing.addvar(obj, 'nt2',0)
+            end
+
+            % Trees from file
+            preprocessing.addvar(obj, 'ltreesfile', 0) % switch for using blocks from a file
+            if obj.ltreesfile
+                preprocessing.addvar(obj, 'treesfile', '') % name of blocks file
             end
 
             preprocessing.addvar(obj, 'lpurif', 0) % switch for purifiers (not implemented)
@@ -403,8 +411,8 @@ classdef preprocessing < dynamicprops
             % Concrete (c)
             id_c  = 1;
             lGR_c = 0;
-            z0_c  = 0.05;
-            z0h_c = 0.00035;
+            z0_c  = 0.018;
+            z0h_c = 0.000067;
             al_c = 0.5;
             em_c = 0.85;
             D_c = 0.36;
@@ -806,7 +814,7 @@ classdef preprocessing < dynamicprops
             topo_dum = load([obj.txtblocksfile],'-ascii');
             obj.topo = topo_dum;
             obj.topomask(topo_dum>0) = 1;
-        end
+        end    
 
         function generate_bl_from_namoptions(obj)
             imax = obj.imax;
@@ -1121,6 +1129,135 @@ classdef preprocessing < dynamicprops
                     end
                 end
             end
+        end       
+
+        function generate_trees_from_namoptions(obj)
+            tree_dz = obj.tree_dz;
+            tree_dx = obj.tree_dx;
+            tree_dy = obj.tree_dy;
+            tree_h = obj.tree_h;
+            tree_w = obj.tree_w;
+            tree_b = obj.tree_b;
+            if obj.lcanyons
+                imax = obj.imax;
+                jtot = obj.jtot;
+                blockwidth = obj.blockwidth;
+                canyonwidth = obj.canyonwidth;
+                nrows =  imax / (blockwidth + canyonwidth); % default is /32;
+                if ceil(nrows) ~= floor(nrows)
+                    l = 0:0.5 * imax;
+                    ind = rem(0.5 * imax, l) == 0;
+                    err = ([l(ind); (0.5 * imax) ./ l(ind)]);
+                    disp('Block system does not fit grid')
+                    disp(['sum widths to: ' num2str(err(1,:))])
+                    disp(['Current width: ' num2str(blockwidth + canyonwidth)])
+                    error('Incorrect block system')
+                end
+                if (canyonwidth / (2*(tree_w+tree_dx))) < 1
+                    error("Trees and spacing won't fit in canyons 2*(tree_dx+tree_w)>canyonwidth")
+                elseif ~obj.lcanyons
+                    error('Generate trees is currently implemented specificly for canyons only')
+                end
+                if tree_b == 0 || tree_dy == 0
+                    ntrees = 2 * nrows;
+                    trees = zeros(ntrees, 6);
+                    trees(1:nrows, 1) = (0.5 * canyonwidth + blockwidth + tree_dx + 1 : canyonwidth + blockwidth : imax - 0.5 * canyonwidth + tree_dx + 1)';
+                    trees(1:nrows, 2) = trees(1:nrows, 1) + tree_w - 1;
+                    trees(nrows+1:end, 1) = (0.5 * canyonwidth - tree_w - tree_dx + 1 : canyonwidth + blockwidth : imax - 0.5 * canyonwidth - blockwidth - tree_w - tree_dx + 1)';
+                    trees(nrows+1:end, 2) = trees(nrows+1:end, 1) + tree_w - 1;
+                    trees(:, 3) = 1;
+                    trees(:, 4) = jtot;
+                    trees(:, 5) = tree_dz + 1;
+                    trees(:, 6) = tree_dz + tree_h - 1;
+                else
+                    ncols = floor(jtot / (tree_b+tree_dy));
+                    ntrees = 2 * nrows * ncols;
+                    tree_i = 1:ntrees;
+                    tree_i = reshape(tree_i,ncols,2*nrows);
+                    extra_dy = 0.5 * (jtot - ncols * (tree_b+tree_dy));
+                    trees = zeros(ntrees, 6);
+                    xpos1 = reshape(repmat((0.5 * canyonwidth + blockwidth + tree_dx + 1 : canyonwidth + blockwidth : imax - 0.5 * canyonwidth + tree_dx + 1)',1,ncols)',size(trees(tree_i(:,1:nrows), 1)));
+                    trees(tree_i(:,1:nrows), 1) = xpos1;
+                    trees(tree_i(:,1:nrows), 2) = trees(tree_i(:,1:nrows), 1) + tree_w - 1;
+                    trees(tree_i(:,nrows+1:end), 1) = reshape(repmat((0.5 * canyonwidth - tree_w - tree_dx + 1 : canyonwidth + blockwidth : imax - 0.5 * canyonwidth - blockwidth - tree_w - tree_dx + 1)',1,ncols)',size(trees(tree_i(:,nrows+1:end), 1)));
+                    trees(tree_i(:,nrows+1:end), 2) = trees(tree_i(:,nrows+1:end), 1) + tree_w - 1;
+                    trees(tree_i(1:ncols,:), 3) = repmat((floor(extra_dy + 0.5*tree_dy) + 1 : tree_b + tree_dy : jtot - ceil(extra_dy + 0.5*tree_dy) - tree_b + 1)',2*(nrows),1);
+                    trees(tree_i(1:ncols,:), 4) = trees(tree_i(1:ncols,:), 3) + tree_b - 1;
+                    trees(:, 5) = tree_dz + 1;
+                    trees(:, 6) = tree_dz + tree_h - 1;
+                end
+            elseif obj.ltreesfile
+                trees = dlmread(obj.treesfile,'', 2, 0);
+                ntrees = size(trees,1);
+            else
+                warning('trees will not be generated, use canyons or tree.inp file.')
+            end
+            preprocessing.addvar(obj, 'ntrees', ntrees)
+            obj.ntrees = ntrees;
+            preprocessing.addvar(obj, 'trees', trees)
+        end
+
+        function plot_blocks_w_trees(obj)
+            figure
+            %title('Blocks', 'interpreter', 'latex')
+            view(3)
+
+            if ~obj.lflat && ~obj.lfloors
+                clr = [0.85, 0.85, 0.85];
+                for i = 1:obj.nblockstotal
+                    il = obj.blocks(i,1);
+                    iu = obj.blocks(i,2);
+                    jl = obj.blocks(i,3);
+                    ju = obj.blocks(i,4);
+                    kl = obj.blocks(i,5);
+                    ku = obj.blocks(i,6);
+
+                    if i <= obj.nblocks
+                        patch([obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1) obj.xh(il)]  , [obj.yh(jl)   obj.yh(jl)   obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(ku+1) obj.zh(ku+1) obj.zh(ku+1) obj.zh(ku+1)], clr)
+                        patch([obj.xh(il)   obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(jl)   obj.yh(jl)   obj.yh(jl)   obj.yh(jl)],   [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                        patch([obj.xh(il)   obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(ju+1) obj.yh(ju+1) obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                        patch([obj.xh(il)   obj.xh(il)   obj.xh(il)   obj.xh(il)]  , [obj.yh(ju+1) obj.yh(ju+1) obj.yh(jl)   obj.yh(jl)],   [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                        patch([obj.xh(iu+1) obj.xh(iu+1) obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(jl)   obj.yh(jl)   obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                    else
+                        patch([obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1) obj.xh(il)]  , [obj.yh(jl)   obj.yh(jl)   obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(ku+1) obj.zh(ku+1) obj.zh(ku+1) obj.zh(ku+1)], clr)
+                        patch([obj.xh(il)   obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(jl)   obj.yh(jl)   obj.yh(jl)   obj.yh(jl)],   [0            obj.zh(ku+1) obj.zh(ku+1)            0], clr)
+                        patch([obj.xh(il)   obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(ju+1) obj.yh(ju+1) obj.yh(ju+1) obj.yh(ju+1)], [0            obj.zh(ku+1) obj.zh(ku+1)            0], clr)
+                        patch([obj.xh(il)   obj.xh(il)   obj.xh(il)   obj.xh(il)]  , [obj.yh(ju+1) obj.yh(ju+1) obj.yh(jl)   obj.yh(jl)],   [0            obj.zh(ku+1) obj.zh(ku+1)            0], clr)
+                        patch([obj.xh(iu+1) obj.xh(iu+1) obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(jl)   obj.yh(jl)   obj.yh(ju+1) obj.yh(ju+1)], [0            obj.zh(ku+1) obj.zh(ku+1)            0], clr)
+                    end
+                end
+            end
+
+            if obj.ltrees
+                clr = [0.20, 0.65, 0.15];
+                for i = 1:obj.ntrees
+                    il = obj.trees(i,1);
+                    iu = obj.trees(i,2);
+                    jl = obj.trees(i,3);
+                    ju = obj.trees(i,4);
+                    kl = obj.trees(i,5);
+                    ku = obj.trees(i,6);
+                    patch([obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1) obj.xh(il)]  , [obj.yh(jl)   obj.yh(jl)   obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(ku+1) obj.zh(ku+1) obj.zh(ku+1) obj.zh(ku+1)], clr)
+                    patch([obj.xh(il)   obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(jl)   obj.yh(jl)   obj.yh(jl)   obj.yh(jl)],   [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                    patch([obj.xh(il)   obj.xh(il)   obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(ju+1) obj.yh(ju+1) obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                    patch([obj.xh(il)   obj.xh(il)   obj.xh(il)   obj.xh(il)]  , [obj.yh(ju+1) obj.yh(ju+1) obj.yh(jl)   obj.yh(jl)],   [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                    patch([obj.xh(iu+1) obj.xh(iu+1) obj.xh(iu+1) obj.xh(iu+1)], [obj.yh(jl)   obj.yh(jl)   obj.yh(ju+1) obj.yh(ju+1)], [obj.zh(kl)   obj.zh(ku+1) obj.zh(ku+1) obj.zh(kl)], clr)
+                end
+            end
+            
+
+            zlim([0 obj.zh(end)]); %/(r.blockheight-1))
+            xlim([0 obj.xh(end)]); %/(r.blockheight-1))
+            ylim([0 obj.yh(end)]); %/(r.blockheight-1))
+
+            set(gca,'ticklabelinterpreter','latex')
+            xlabel('$x(\mathrm{m})$','interpreter','latex')
+            ylabel('$y(\mathrm{m})$','interpreter','latex')
+            zlabel('$z(\mathrm{m})$','interpreter','latex')
+            set(gca,'BoxStyle','full','Box','on')
+            daspect([1 1 1])
+            set(gca, 'FontSize', 12)
+            grid on
         end
 
         function plot_bl(obj)
@@ -3777,6 +3914,14 @@ classdef preprocessing < dynamicprops
             fclose(blocks);
         end
 
+        function write_trees(obj)
+            trees = fopen( ['trees.inp.' obj.expnr], 'w');
+            fprintf(trees, '# Trees data\n');
+            fprintf(trees, '# tree_n\t il\t   iu\t   jl\t   ju\t   kl\t   ku\t\n');
+            fprintf(trees, '%4d\t%4d\t%4d\t%4d\t%4d\t%4d\t\n', obj.trees');
+            fclose(trees);
+        end
+
         function write_facets(obj)
             fname = ['facets.inp.' num2str(obj.expnr)];
             fileID = fopen(fname,'w');
@@ -4717,6 +4862,5 @@ classdef preprocessing < dynamicprops
                 end
             end
         end
-
     end
 end
