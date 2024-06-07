@@ -713,97 +713,103 @@ contains
       ! if (BCym == 1) deallocate(FFTJ, wjnew)
 
     case(POISS_FFT2D_2DECOMP)
-      call alloc_x(px, opt_xlevel=(/0,0,0/))
-      call alloc_y(py, opt_ylevel=(/0,0,0/))
-      call alloc_z(pz, opt_zlevel=(/0,0,0/))
-      allocate(Fx(sp%xsz(1),sp%xsz(2),sp%xsz(3)))
-      allocate(Fy(sp%ysz(1),sp%ysz(2),sp%ysz(3)))
-      allocate(Fz(sp%zsz(1),sp%zsz(2),sp%zsz(3)))
-      allocate(d (sp%zsz(1),sp%zsz(2),sp%zsz(3)))
 
-      pz = p(ib:ie,jb:je,kb:ke)
+      write(0, *) 'ERROR: POISS_FFT2D_2DECOMP cannot be used.'
+      stop 1
+      ! DM: this POISS_FFT2D_2DECOMP has been commented as it's creating compilation error when using 
+      ! pbartholomew/2decomp-fft. If one wish to use POISS_FFT2D_2DECOMP, needs to be rectified.
 
-      ! Starting in z-pencil, transpose to x-pencil
-      call transpose_z_to_y(pz, py)
-      call transpose_y_to_x(py, px)
+      ! call alloc_x(px, opt_xlevel=(/0,0,0/))
+      ! call alloc_y(py, opt_ylevel=(/0,0,0/))
+      ! call alloc_z(pz, opt_zlevel=(/0,0,0/))
+      ! allocate(Fx(sp%xsz(1),sp%xsz(2),sp%xsz(3)))
+      ! allocate(Fy(sp%ysz(1),sp%ysz(2),sp%ysz(3)))
+      ! allocate(Fz(sp%zsz(1),sp%zsz(2),sp%zsz(3)))
+      ! allocate(d (sp%zsz(1),sp%zsz(2),sp%zsz(3)))
 
-      ! Do forward FFT in x direction
-      call r2c_1m_x(px, Fx)
-      Fx = Fx/sqrt(1.*itot)
+      ! pz = p(ib:ie,jb:je,kb:ke)
 
-      ! Transpose to y-pencil
-      call transpose_x_to_y(Fx, Fy, sp)
+      ! ! Starting in z-pencil, transpose to x-pencil
+      ! call transpose_z_to_y(pz, py)
+      ! call transpose_y_to_x(py, px)
 
-      ! Do forward FFT in y direction
-      call c2c_1m_y(Fy, -1, plan(0,2))
-      Fy = Fy/sqrt(1.*jtot)
+      ! ! Do forward FFT in x direction
+      ! call r2c_1m_x(px, Fx)
+      ! Fx = Fx/sqrt(1.*itot)
 
-      ! Transpose to z-pencil
-      call transpose_y_to_z(Fy, Fz, sp)
+      ! ! Transpose to y-pencil
+      ! call transpose_x_to_y(Fx, Fy, sp)
 
-      ! Solve system using Gaussian elimination
-      do j=1,sp%zsz(2)
-        do i=1,sp%zsz(1)
-          z         = 1./(b(1)+xyzrt(i,j,1))
-          d(i,j,1)  = c(1)*z
-          Fz(i,j,1) = Fz(i,j,1)*z
-        end do
-      end do
+      ! ! Do forward FFT in y direction
+      ! call c2c_1m_y(Fy, -1, plan(0,2))
+      ! Fy = Fy/sqrt(1.*jtot)
 
-      do k=2,sp%zsz(3)-1
-        do j=1,sp%zsz(2)
-          do i=1,sp%zsz(1)
-            bbk       = b(k)+xyzrt(i,j,k)
-            z         = 1./(bbk-a(k)*d(i,j,k-1))
-            d(i,j,k)  = c(k)*z
-            Fz(i,j,k) = (Fz(i,j,k)-a(k)*Fz(i,j,k-1))*z
-          end do
-        end do
-      end do
+      ! ! Transpose to z-pencil
+      ! call transpose_y_to_z(Fy, Fz, sp)
 
-      ak = a(ktot)
-      bk = b(ktot)
-      do j=1,sp%zsz(2)
-        do i=1,sp%zsz(1)
-          bbk = bk + xyzrt(i,j,ktot)
-          z        = bbk-ak*d(i,j,ktot-1)
-          if(z/=0.) then
-            Fz(i,j,ktot) = (Fz(i,j,ktot)-ak*Fz(i,j,ktot-1))/z
-          else
-            Fz(i,j,ktot) =0.
-          end if
-        end do
-      end do
+      ! ! Solve system using Gaussian elimination
+      ! do j=1,sp%zsz(2)
+      !   do i=1,sp%zsz(1)
+      !     z         = 1./(b(1)+xyzrt(i,j,1))
+      !     d(i,j,1)  = c(1)*z
+      !     Fz(i,j,1) = Fz(i,j,1)*z
+      !   end do
+      ! end do
 
-      do k=sp%zsz(3)-1,1,-1
-        do j=1,sp%zsz(2)
-          do i=1,sp%zsz(1)
-            Fz(i,j,k) = Fz(i,j,k)-d(i,j,k)*Fz(i,j,k+1)
-          end do
-        end do
-      end do
+      ! do k=2,sp%zsz(3)-1
+      !   do j=1,sp%zsz(2)
+      !     do i=1,sp%zsz(1)
+      !       bbk       = b(k)+xyzrt(i,j,k)
+      !       z         = 1./(bbk-a(k)*d(i,j,k-1))
+      !       d(i,j,k)  = c(k)*z
+      !       Fz(i,j,k) = (Fz(i,j,k)-a(k)*Fz(i,j,k-1))*z
+      !     end do
+      !   end do
+      ! end do
 
-      ! Tranpose to y-pencil
-      call transpose_z_to_y(Fz, Fy, sp)
+      ! ak = a(ktot)
+      ! bk = b(ktot)
+      ! do j=1,sp%zsz(2)
+      !   do i=1,sp%zsz(1)
+      !     bbk = bk + xyzrt(i,j,ktot)
+      !     z        = bbk-ak*d(i,j,ktot-1)
+      !     if(z/=0.) then
+      !       Fz(i,j,ktot) = (Fz(i,j,ktot)-ak*Fz(i,j,ktot-1))/z
+      !     else
+      !       Fz(i,j,ktot) =0.
+      !     end if
+      !   end do
+      ! end do
 
-      ! Do backward FFT in y direction
-      call c2c_1m_y(Fy, 1, plan(2,2))
-      Fy = Fy/sqrt(1.*jtot)
+      ! do k=sp%zsz(3)-1,1,-1
+      !   do j=1,sp%zsz(2)
+      !     do i=1,sp%zsz(1)
+      !       Fz(i,j,k) = Fz(i,j,k)-d(i,j,k)*Fz(i,j,k+1)
+      !     end do
+      !   end do
+      ! end do
 
-      ! Transpose to x-pencil
-      call transpose_y_to_x(Fy, Fx, sp)
+      ! ! Tranpose to y-pencil
+      ! call transpose_z_to_y(Fz, Fy, sp)
 
-      ! Do backward FFT in x direction
-      call c2r_1m_x(Fx, px)
-      px = px/sqrt(1.*itot)
+      ! ! Do backward FFT in y direction
+      ! call c2c_1m_y(Fy, 1, plan(2,2))
+      ! Fy = Fy/sqrt(1.*jtot)
 
-      ! Tranpose to z-pencil
-      call transpose_x_to_y(px, py)
-      call transpose_y_to_z(py, pz)
+      ! ! Transpose to x-pencil
+      ! call transpose_y_to_x(Fy, Fx, sp)
 
-      p(ib:ie,jb:je,kb:ke) = pz
+      ! ! Do backward FFT in x direction
+      ! call c2r_1m_x(Fx, px)
+      ! px = px/sqrt(1.*itot)
 
-      deallocate(px,py,pz,Fx,Fy,Fz,d)
+      ! ! Tranpose to z-pencil
+      ! call transpose_x_to_y(px, py)
+      ! call transpose_y_to_z(py, pz)
+
+      ! p(ib:ie,jb:je,kb:ke) = pz
+
+      ! deallocate(px,py,pz,Fx,Fy,Fz,d)
 
 
     case (POISS_FFT3D)
