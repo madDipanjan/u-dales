@@ -34,7 +34,6 @@ subroutine advection
       ltempeq, ih, jh, kh, ihc, jhc, khc, kb, ke, ib, ie, jb, je
    use modfields, only:u0, up, v0, vp, w0, wp, e120, e12p, thl0, thl0c, thlp, thlpc, qt0, qtp, sv0, svp, pres0, uh, vh, wh, pres0h
    use modsubgriddata, only:loneeqn
-   use decomp_2d
    implicit none
    integer :: n
 

@@ -98,7 +98,6 @@ subroutine advecu_2nd(putin, putout)
    use modibm, only:nxwallsnorm, nzwallsnorm, nywallsm, nywallsp, ywallsm, ywallsp, &
       xwallsnorm, zwallsnorm
    use modmpi, only:myid
-   use decomp_2d
    implicit none
 
    real, dimension(ib - ih:ie + ih, jb - jh:je + jh, kb - kh:ke + kh), intent(in)  :: putin !< Input: the u-field
