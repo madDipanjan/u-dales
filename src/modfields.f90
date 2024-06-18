@@ -580,7 +580,7 @@ contains
     allocate(vprof(kb:ke+kh)); vprof = 0.
     allocate(e12prof(kb:ke+kh)); e12prof = 0.
     allocate(sv0av(kb:ke+khc,nsv)); sv0av = 0.
-    allocate(svprof(kb:ke+kh,nsv)); svprof = 0.
+    allocate(svprof(kb:ke+khc,nsv)); svprof = 0.
     allocate(thlpcar(kb:ke+kh)); thlpcar = 0.
     allocate(wout(ib:ie)); wout = 0.;        ! j -averaged top velocity
     !allocate(friction(ib:ie)); friction = 0. ! line-averaged (along j) skin friction

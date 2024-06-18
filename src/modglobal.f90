@@ -362,8 +362,15 @@ module modglobal
    !Advection scheme
    integer, parameter :: iadv_upw = 1  !< first order upwind scheme
    integer, parameter :: iadv_cd2 = 2  !< second order central difference scheme
+   integer, parameter :: iadv_fluxlimiter = 5  !< Flux limiter scheme
    integer, parameter :: iadv_kappa = 7  !< Kappa scheme
    integer :: iadv_mom = 2, iadv_tke = -1, iadv_thl = -1, iadv_qt = -1, iadv_sv(100) = -1
+
+   integer, parameter :: icentral  = 1    !< central difference scheme
+   integer, parameter :: iupwind   = 2    !< upwind scheme
+   integer, parameter :: isuperbee = 1    !< superbee flux limiter scheme
+   integer, parameter :: iminmod   = 2    !< minmod flux limiter scheme
+   integer :: ilimiter = isuperbee 
 
    logical :: lmoist = .false. !<   switch to calculate moisture fields
    ! Global variables (modvar.f90)
@@ -508,15 +515,37 @@ contains
       integer :: i, j, k, n
       character(80) chmess
 
+      ! Set advection schemes. If not set in the options file, the momentum scheme is used
+      if (iadv_tke < 0) iadv_tke = iadv_mom
+      if (iadv_thl < 0) iadv_thl = iadv_mom
+      if (iadv_qt < 0) iadv_qt = iadv_mom
+
+      do n = 1, nsv
+         if (iadv_sv(n) < 0) then
+            iadv_sv(n) = iadv_kappa
+         elseif (iadv_sv(n) == iadv_fluxlimiter .and. iadv_mom .ne. iadv_fluxlimiter) then
+            if (myid==0) then
+               write(*,*) "ERROR!! flux limiter cannot be used only for scalars. One must set all &
+                           of the advection schemes to be flux limiter (= 5). "
+            end if
+            STOP 1
+         end if
+      end do
+      !ends here
+
       !timestepping
       if (courant < 0) then
          select case (iadv_mom)
          case (iadv_cd2)
             courant = 1.5
+         case (iadv_fluxlimiter)
+            courant = 1.1
          case default
             courant = 1.4
          end select
          if (any(iadv_sv(1:nsv) == iadv_kappa) .or. any((/iadv_thl, iadv_qt, iadv_tke/) == iadv_kappa)) then
+            courant = min(courant, 1.1)
+         elseif (any(iadv_sv(1:nsv) == iadv_fluxlimiter) .or. any((/iadv_thl, iadv_qt, iadv_tke/) == iadv_fluxlimiter)) then
             courant = min(courant, 1.1)
          elseif (any(iadv_sv(1:nsv) == iadv_upw) .or. any((/iadv_thl, iadv_qt, iadv_tke/) == iadv_upw)) then
             courant = min(courant, 1.1)
@@ -531,6 +560,7 @@ contains
       !imax = itot/nprocx ! Only in z-pencil
       isen = imax ! Only in z-pencil - replace eventually so it is pencil-independent (in poisson)
       jsen = jmax ! Only in z-pencil - replace eventually so it is pencil-independent (in poisson)
+      
       !set the number of ghost cells. NB: This switch has to run in order of required ghost cells
       advarr = (/iadv_mom, iadv_tke, iadv_thl, iadv_qt/)
       if (any(advarr == iadv_kappa)) then
@@ -538,23 +568,29 @@ contains
          jh = 2
          kh = 1
          ! SO: think this is inconsistent
-      elseif (any(advarr == iadv_cd2) .or. any(iadv_sv(1:nsv) == iadv_cd2)) then
+      elseif (any(advarr == iadv_cd2)) then
          ih = 1
          jh = 1
          kh = 1
-         ihc = 1
-         jhc = 1
-         khc = 1
+      elseif (any(advarr == iadv_fluxlimiter)) then
+         ih = 2
+         jh = 2
+         kh = 2
       end if
 
       ! J. Tomas added this for using only kappa scheme for sv(:)
       if (any(iadv_sv(1:nsv) == iadv_kappa) .or. (iadv_thl == iadv_kappa)) then
-         ih = 1
-         jh = 1
-         kh = 1
          ihc = 2
          jhc = 2
          khc = 2
+      elseif (any(iadv_sv(1:nsv) == iadv_fluxlimiter)) then
+         ihc = 2
+         jhc = 2
+         khc = 2
+      else
+         ihc = 1
+         jhc = 1
+         khc = 1
       end if
 
       ! Eventually ib etc should be completely replaced.
@@ -613,21 +649,6 @@ contains
       !write(*,*) "myid, ibrank, ierank", myid, ibrank, ierank
 
       ! Global constants
-
-      ! Select advection scheme for scalars. If not set in the options file, the momentum scheme is used
-      if (iadv_tke < 0) iadv_tke = iadv_mom
-      if (iadv_thl < 0) iadv_thl = iadv_mom
-      if (iadv_qt < 0) iadv_qt = iadv_mom
-
-      !CvH remove where
-      !where (iadv_sv<0)  iadv_sv  = iadv_mom
-
-      !tg3315 added - only uses kappa advection scheme...
-      do n = 1, nsv
-         iadv_sv(n) = iadv_kappa
-      end do
-      !ends here
-
       phi = xlat*pi/180.
       colat = cos(phi)
       silat = sin(phi)
@@ -713,13 +734,20 @@ contains
       do k = kb, ke
          zh(k + 1) = zh(k) + 2.0*(zf(k) - zh(k))
       end do
-      zf(ke + kh) = zf(ke) + 2.0*(zh(ke + kh) - zf(ke))
+      do k = 1, kh
+         zf(ke + k) = zf(ke + k - 1) + 2.0*(zh(ke + k) - zf(ke + k - 1))
+         if (ke+k+1<=ke+kh) zh(ke + k + 1) = zh(ke + k) + 2.0*(zf(ke + k) - zh(ke + k))
+      end do
 
       do k = kb, ke
          dzf(k) = zh(k + 1) - zh(k)
       end do
-      dzf(ke + 1) = dzf(ke)
-      dzf(kb - 1) = dzf(kb)
+      ! dzf(ke + 1) = dzf(ke)
+      ! dzf(kb - 1) = dzf(kb)
+      do k = 1, kh
+         dzf(ke + k) = 2.0*(zf(ke+k) - zh(ke+k))
+         dzf(kb - k) = dzf(kb - k + 1)
+      end do
 
       dzh(kb) = 2*zf(kb)
       do k = kb + 1, ke + kh
@@ -747,11 +775,15 @@ contains
       do i = ib, itot
          dxf(i) = xh(i + 1) - xh(i)
       end do
-      dxf(itot + 1) = dxf(itot)
-      dxf(ib - 1) = dxf(ib)
+      ! dxf(itot + 1) = dxf(itot)
+      ! dxf(ib - 1) = dxf(ib)
+      do i = 1, ih 
+         dxf(itot + i) = dxf(itot + i - 1)
+         dxf(ib - i) = dxf(ib - i + 1) 
+      end do
 
       dxh(ib) = 2*xf(ib)
-      do i = 2, itot + ih
+      do i = ib + 1, itot + ih
          dxh(i) = xf(i) - xf(i - 1)
       end do
 

@@ -30,7 +30,7 @@
 subroutine advection
 
    use modglobal, only:lmoist, nsv, iadv_mom, iadv_tke, iadv_thl, iadv_qt, iadv_sv, &
-      iadv_cd2, iadv_kappa, iadv_upw, &
+      iadv_cd2, iadv_fluxlimiter, iadv_kappa, iadv_upw, &
       ltempeq, ih, jh, kh, ihc, jhc, khc, kb, ke, ib, ie, jb, je
    use modfields, only:u0, up, v0, vp, w0, wp, e120, e12p, thl0, thl0c, thlp, thlpc, qt0, qtp, sv0, svp, pres0, uh, vh, wh, pres0h
    use modsubgriddata, only:loneeqn
@@ -42,6 +42,10 @@ subroutine advection
      call advecu_2nd(u0,up)
      call advecv_2nd(v0,vp)
      call advecw_2nd(w0,wp)
+   case (iadv_fluxlimiter)
+      call advecu_Flimiter(u0,up)
+      call advecv_Flimiter(v0,vp)
+      call advecw_Flimiter(w0,wp)
    case default
       write(0, *) "ERROR: Unknown advection scheme"
       stop 1
@@ -51,6 +55,8 @@ subroutine advection
       select case (iadv_tke)
       case (iadv_cd2)
          call advecc_2nd(ih, jh, kh, e120, e12p)
+      case (iadv_fluxlimiter)
+         call advecc_Flimiter(ih, jh, kh, e120, e12p)
       case default
          write(0, *) "ERROR: Unknown advection scheme"
          stop 1
@@ -60,6 +66,8 @@ subroutine advection
    select case (iadv_thl)
    case (iadv_cd2)
       if (ltempeq) call advecc_2nd(ih, jh, kh, thl0, thlp)
+   case (iadv_fluxlimiter)
+      if (ltempeq) call advecc_Flimiter(ih, jh, kh, thl0, thlp)
    case (iadv_kappa)
       thlpc(ib:ie,jb:je,kb:ke) = thlp(ib:ie,jb:je,kb:ke)
       if (ltempeq) call advecc_kappa(ihc, jhc, khc, thl0c, thlpc)
@@ -73,6 +81,8 @@ subroutine advection
       select case (iadv_qt)
       case (iadv_cd2)
          call advecc_2nd(ih, jh, kh, qt0, qtp)
+      case (iadv_fluxlimiter)
+         call advecc_Flimiter(ih, jh, kh, qt0, qtp)
       case default
          write(0, *) "ERROR: Unknown advection scheme"
          stop 1
@@ -82,10 +92,13 @@ subroutine advection
       select case (iadv_sv (n))
       case (iadv_cd2)
          call advecc_2nd(ihc, jhc, khc, sv0(:, :, :, n), svp(:, :, :, n))
+      case (iadv_fluxlimiter)
+         call advecc_Flimiter(ihc, jhc, khc, sv0(:, :, :, n), svp(:, :, :, n))
       case (iadv_kappa)
          call advecc_kappa(ihc, jhc, khc, sv0(:, :, :, n), svp(:, :, :, n))
       case (iadv_upw)
          call advecc_upw(ihc, jhc, khc, sv0(:, :, :, n), svp(:, :, :, n))
+         ! DMajumdar: upwind scheme doesn't seem to work (invalid memory reference) 
       case default
          write(0, *) "ERROR: Unknown advection scheme"
          stop 1
