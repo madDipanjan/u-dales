@@ -776,6 +776,7 @@ contains
         write(*,*) "NOTE: ensure ztot == ztot of driver case ",cdriverjobnr
         write(*,*) "NOTE: ensure z direction grid (i.e. zsize and other parameters if stretching) == z direction grid of driver case ",cdriverjobnr
         write(*,*) "NOTE: ensure driverstore <= last driver entry step count in driver case ",cdriverjobnr, ", check corresponding simulation log."
+        write(*,*) "NOTE: ensure iadv_mom, iadv_sv == iadv_mom, iadv_sv of driver case ",cdriverjobnr,", respectively"
       else ! if lwarmstart
         write(*,*) "NOTE: ensure driverstore <= last driver entry step count in driver case ",cdriverjobnr, ", check corresponding simulation log."
       end if
