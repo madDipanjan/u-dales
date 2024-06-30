@@ -853,11 +853,17 @@ contains
 
          dzhci(kb:ke + kh) = dzhi(kb:ke + kh)
          dzhci(kb - 1) = dzhci(kb)
-         dzhci(ke + khc) = dzhci(ke + kh)
+         ! dzhci(ke + khc) = dzhci(ke + kh)
+         do k = 1, khc-kh
+            dzhci(ke + kh + k) = dzhci(ke + kh + k - 1)
+         end do
 
          dxhci(ib:itot + ih) = dxhi(ib:itot + ih)
          dxhci(ib - 1) = dxhci(ib)
-         dxhci(itot + ihc) = dxhci(itot + ih)
+         ! dxhci(itot + ihc) = dxhci(itot + ih)
+         do i = 1, ihc-ih
+            dxhci(itot + ih + i) = dxhci(itot + ih + i - 1)
+         end do
 
          dzfci = 1./dzfc
          dxfci = 1./dxfc

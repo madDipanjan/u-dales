@@ -1564,6 +1564,7 @@ contains
   end subroutine statsdump
 
   !> tg3315 still under going work to be completed
+  ! DMajumdar: ib-1,ie+1,jb-1,je+1,ke+1 etc. should be appropriately converted in terms of ih, jh and kh
   subroutine tkestatsdump
 
   use modfields,        only : u0,v0,w0,thl0,uav,vav,wav,uuav,vvav,wwav,uvav,uwav,vwav,thlav,thlthlav,pres0,thluav,thlvav,thlwav,&

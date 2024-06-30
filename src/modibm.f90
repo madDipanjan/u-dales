@@ -725,7 +725,7 @@ module modibm
      ! Solid value does not matter when using second order scheme
      ! Set interior to a constant and boundary to average of fluid neighbours
      if (ltempeq) then
-        call solid(solid_info_c, thlm, thlp, sum(thl0av(kb:ke)*dzf(kb:ke))/zh(ke+1), ih, jh, kh, mask_c)
+        call solid(solid_info_c, thlm, thlp, sum(thl0av(kb:ke)*dzf(kb:ke))/(zh(ke+1)-zh(kb)), ih, jh, kh, mask_c)
         if (iadv_thl == iadv_cd2) call advecc2nd_corr_liberal(thl0, thlp)
      end if
 
@@ -1634,7 +1634,7 @@ module modibm
      i = cell(1) - zstart(1) + 1
      j = cell(2) - zstart(2) + 1
      k = cell(3) - zstart(3) + 1
-     if ((i < ib-1) .or. (i > ie+1) .or. (j < jb-1) .or. (j > je+1)) then
+     if ((i < ib-ih) .or. (i > ie+ih) .or. (j < jb-jh) .or. (j > je+jh)) then
        write(*,*) "problem in trilinear_interp_var", i, j, k
        stop 1
      end if
@@ -2016,10 +2016,14 @@ module modibm
       use modsubgriddata, only:ekm, ekh
       use modmpi, only:myid
       implicit none
-      integer :: i, j, jp, jm, m
+      integer :: i, j, k, jp, jm, m
 
-      e120(:, :, kb - 1) = e120(:, :, kb)
-      e12m(:, :, kb - 1) = e12m(:, :, kb)
+      do k = 1,kh
+        e120(:, :, kb - k) = e120(:, :, kb-k+1)
+        e12m(:, :, kb - k) = e12m(:, :, kb-k+1)
+      end do
+      ! e120(:, :, kb - 1) = e120(:, :, kb)
+      ! e12m(:, :, kb - 1) = e12m(:, :, kb)
       ! wm(:, :, kb) = 0. ! SO moved to modboundary
       ! w0(:, :, kb) = 0.
       tau_x(:,:,kb:ke+kh) = up

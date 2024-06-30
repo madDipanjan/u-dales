@@ -154,12 +154,12 @@ contains
       ! broadcast variables
       call MPI_BCAST(ntree_max , 1,MY_REAL ,0,comm3d,mpierr)
       call MPI_BCAST(tr_A , 1,MY_REAL ,0,comm3d,mpierr)
-      call MPI_BCAST(Rn , ke+1,MY_REAL ,0,comm3d,mpierr)
-      call MPI_BCAST(qc , ke+1,MY_REAL ,0,comm3d,mpierr)
-      call MPI_BCAST(clai  , ke+1,MY_REAL ,0,comm3d,mpierr)  
-      call MPI_BCAST(qa  , ke+1,MY_REAL ,0,comm3d,mpierr)
-      call MPI_BCAST(ladzf  , ke+1,MY_REAL ,0,comm3d,mpierr)
-      call MPI_BCAST(ladzh , ke+1,MY_REAL ,0,comm3d,mpierr)
+      call MPI_BCAST(Rn , ke-kb+1,MY_REAL ,0,comm3d,mpierr)
+      call MPI_BCAST(qc , ke-kb+1,MY_REAL ,0,comm3d,mpierr)
+      call MPI_BCAST(clai  , ke-kb+1,MY_REAL ,0,comm3d,mpierr)  
+      call MPI_BCAST(qa  , ke-kb+1,MY_REAL ,0,comm3d,mpierr)
+      call MPI_BCAST(ladzf  , ke-kb+1,MY_REAL ,0,comm3d,mpierr)
+      call MPI_BCAST(ladzh , ke-kb+1,MY_REAL ,0,comm3d,mpierr)
 
     end subroutine createtrees
 

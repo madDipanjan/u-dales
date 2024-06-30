@@ -100,7 +100,7 @@ contains
         vpwpav = vwav - vav*wav            ! overline(v'w') = overline(vw) - V*W
 
         ! thlw and svw: ib:ie jb:je kb:ke+1  (located on w-faces) !tg3315 BUT thlwav is on cell centre...
-        do k=kb,ke+1
+        do k=kb,ke+kh
           km = k-1
           do j=jb,je
             do i=ib,ie

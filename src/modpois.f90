@@ -1064,8 +1064,11 @@ contains
 
       do i=ib,ie
         do j=jb,je
+          do k=1,kh
           !wp(i,j,ke+1) = -(-pij(ke)-p(i,j,ke))*dzhi(ke+1) ! Doesn't work
-          wp(i,j,ke+1) = wp(i,j,ke+1) + 2*pij(ke)*dzhi(ke+1)
+          ! wp(i,j,ke+1) = wp(i,j,ke+1) + 2*pij(ke)*dzhi(ke+1)
+          wp(i,j,ke+k) = wp(i,j,ke+k) + 2*pij(ke+k-1)*dzhi(ke+k)
+          end do
         end do
       end do
 
@@ -1096,9 +1099,9 @@ contains
     !   pijk = sum(pij(kb:ke))/(ke-kb)
     ! end if
 
-    do k=kb-1,ke+1
-      do j=jb-1,je+1
-        do i=ib-1,ie+1
+    do k=kb-kh,ke+kh
+      do j=jb-jh,je+jh
+        do i=ib-ih,ie+ih
           pres0(i,j,k)=pres0(i,j,k)+p(i,j,k)!-pijk ! update of the pressure: P_new = P_old + p
         enddo
       enddo

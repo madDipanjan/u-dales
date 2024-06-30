@@ -381,6 +381,12 @@ contains
       vprof   = vproft  (:,t) + fac * (vproft  (:,t+1) - vproft  (:,t))
     end if
 
+    do k = 1,kh
+      uprof(ke+k) = uprof(ke)
+      vprof(ke+k) = vprof(ke)
+      thlprof(ke+k) = thlprof(ke)
+      qtprof(ke+k) = qtprof(ke)
+    end do
     ! if ((myid == 0) .or. (myid == 1)) then
     !   write(*, *) "myid, t, timee, timenudge(t), thlproft(ke,t), thlproft(ke,t+1), thlprof(ke)"
     !   write(*, *) myid, t, timee, timenudge(t), thlproft(ke,t), thlproft(ke,t+1), thlprof(ke)

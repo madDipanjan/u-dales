@@ -55,7 +55,9 @@ contains
       do k = ksp, ke
          tsc(k) = rnu0*sin(0.5*pi*(zf(k) - zspb)/(zspt - zspb))**2
       end do
-      tsc(ke + 1) = tsc(ke)
+      do k = 1, kh
+        tsc(ke + k) = tsc(ke + k - 1)
+      end do
       irecy = ib + iplane
 
    end subroutine initboundary
@@ -153,8 +155,8 @@ contains
         end do
         ! need a method to know if we have all blocks at lowest cell kb
         ! assuming this for now (hence kb+1)
-        uouttot = sum(uaverage(kb:ke))/(zh(ke + 1) - zh(kb+1))
-        vouttot = sum(vaverage(kb:ke))/(zh(ke + 1) - zh(kb+1))
+        uouttot = sum(uaverage(kb:ke))/(zh(ke + 1) - zh(kb))
+        vouttot = sum(vaverage(kb:ke))/(zh(ke + 1) - zh(kb))
      else
         uouttot = ubulk
         vouttot = vbulk
@@ -174,28 +176,34 @@ contains
         call fluxtop(u0, ekm, 0.0)
         call fluxtop(vm, ekm, 0.0)
         call fluxtop(v0, ekm, 0.0)
-        w0(:, :, ke + 1) = 0.0
-        wm(:, :, ke + 1) = 0.0
-        if (loneeqn) then
-          e120(:, :, ke + 1) = e12min
-          e12m(:, :, ke + 1) = e12min
-        end if
+        do k = 1, kh
+          w0(:, :, ke + k) = 0.0
+          wm(:, :, ke + k) = 0.0
+          if (loneeqn) then
+            e120(:, :, ke + k) = e12min
+            e12m(:, :, ke + k) = e12min
+          end if
+        end do
      case(BCtopm_noslip)
         !no-slip = fixed velocity at wall
         call valuetop(um, Uinf)
         call valuetop(u0, Uinf)
         call valuetop(vm, Vinf)
         call valuetop(v0, Vinf)
-        w0(:, :, ke + 1) = 0.0
-        wm(:, :, ke + 1) = 0.0
+        do k = 1, kh
+          w0(:, :, ke + k) = 0.0
+          wm(:, :, ke + k) = 0.0
+        end do
       case(BCtopm_pressure)
          call fluxtop(um, ekm, 0.0)
          call fluxtop(u0, ekm, 0.0)
          call fluxtop(vm, ekm, 0.0)
          call fluxtop(v0, ekm, 0.0)
          if (loneeqn) then
-           e120(:, :, ke + 1) = e12min
-           e12m(:, :, ke + 1) = e12min
+          do k = 1, kh
+           e120(:, :, ke + k) = e12min
+           e12m(:, :, ke + k) = e12min
+          end do
          end if
          ! w considered in modpois
       case default
@@ -396,65 +404,81 @@ contains
                                 BCtopm_freeslip, BCtopm_noslip, BCtopm_pressure, &
                                 BCxm_periodic, BCym_periodic
      use decomp_2d,      only : exchange_halo_z
-     integer i, j
+     integer i, j, k
 
      call exchange_halo_z(ekm)
      call exchange_halo_z(ekh)
 
      ! Top and bottom
      if ((BCtopm .eq. BCtopm_freeslip) .or. (BCtopm .eq. BCtopm_pressure)) then
-       do j = jb - 1, je + 1
-         do i = ib - 1, ie + 1
-           ekm(i, j, ke + 1) = ekm(i, j, ke) ! zero-gradient top wall
-           ekh(i, j, ke + 1) = ekh(i, j, ke) ! zero-gradient top wall
-           ekm(i, j, kb - 1) = 2.*numol - ekm(i, j, kb) ! no-slip lower wall
-           ekh(i, j, kb - 1) = (2.*numol*prandtlmoli) - ekh(i, j, kb) ! no-slip lower wall
+       do j = jb - jh, je + jh
+         do i = ib - ih, ie + ih
+          do k = 1, kh
+           ekm(i, j, ke + k) = ekm(i, j, ke + k - 1) ! zero-gradient top wall
+           ekh(i, j, ke + k) = ekh(i, j, ke + k - 1) ! zero-gradient top wall
+           ekm(i, j, kb - k) = 2.*numol - ekm(i, j, kb - k + 1) ! no-slip lower wall
+           ekh(i, j, kb - k) = (2.*numol*prandtlmoli) - ekh(i, j, kb - k + 1) ! no-slip lower wall
+          end do
          end do
        end do
      else if (BCtopm .eq. BCtopm_noslip) then
-       do j = jb - 1, je + 1
-         do i = ib - 1, ie + 1
-           ekm(i, j, ke + 1) = 2.*numol - ekm(i, j, ke) ! no-slip top wall
-           ekh(i, j, ke + 1) = (2.*numol*prandtlmoli) - ekh(i, j, ke) ! no-slip top wall
-           ekm(i, j, kb - 1) = 2.*numol - ekm(i, j, kb) ! no-slip lower wall
-           ekh(i, j, kb - 1) = (2.*numol*prandtlmoli) - ekh(i, j, kb) ! no-slip lower wall
+       do j = jb - jh, je + jh
+         do i = ib - ih, ie + ih
+          do k = 1, kh
+           ekm(i, j, ke + k) = 2.*numol - ekm(i, j, ke + k - 1) ! no-slip top wall
+           ekh(i, j, ke + k) = (2.*numol*prandtlmoli) - ekh(i, j, ke + k - 1) ! no-slip top wall
+           ekm(i, j, kb - k) = 2.*numol - ekm(i, j, kb - k + 1) ! no-slip lower wall
+           ekh(i, j, kb - k) = (2.*numol*prandtlmoli) - ekh(i, j, kb - k + 1) ! no-slip lower wall
+          end do
          end do
        end do
      end if
 
      if (BCxm .ne. BCxm_periodic) then ! inflow/outflow
        if (ibrank) then
-         ekm(ib - 1, :, :) = ekm(ib, :, :)
-         ekh(ib - 1, :, :) = ekh(ib, :, :)
+        do i = 1, ih
+         ekm(ib - i, :, :) = ekm(ib - i + 1, :, :)
+         ekh(ib - i, :, :) = ekh(ib - i + 1, :, :)
+        end do
        end if
        if (ierank) then
-         ekm(ie + 1, :, :) = ekm(ie, :, :)
-         ekh(ie + 1, :, :) = ekh(ie, :, :)
+        do i = 1, ih
+         ekm(ie + i, :, :) = ekm(ie + i - 1, :, :)
+         ekh(ie + i, :, :) = ekh(ie + i - 1, :, :)
+        end do
        end if
      else ! periodic
        if (ibrank .and. ierank) then
-         ekm(ib - 1, :, :) = ekm(ie, :, :)
-         ekm(ie + 1, :, :) = ekm(ib, :, :)
-         ekh(ib - 1, :, :) = ekh(ie, :, :)
-         ekh(ie + 1, :, :) = ekh(ib, :, :)
+        do i = 1, ih
+         ekm(ib - i, :, :) = ekm(ie + i - 1, :, :)
+         ekm(ie + i, :, :) = ekm(ib - i + 1, :, :)
+         ekh(ib - i, :, :) = ekh(ie + i - 1, :, :)
+         ekh(ie + i, :, :) = ekh(ib - i + 1, :, :)
+        end do
        end if
      end if
 
      if (BCym .ne. BCym_periodic) then ! inflow/outflow
        if (jbrank) then
-         ekm(:,jb-1,:) = ekm(:,jb,:)
-         ekh(:,jb-1,:) = ekh(:,jb,:)
+        do j = 1, jh
+         ekm(:,jb-j,:) = ekm(:,jb-j+1,:)
+         ekh(:,jb-j,:) = ekh(:,jb-j+1,:)
+        end do
        end if
        if (jerank) then
-         ekm(:,je+1,:) = ekm(:,je,:)
-         ekh(:,je+1,:) = ekh(:,je,:)
+        do j = 1, jh
+         ekm(:,je+j,:) = ekm(:,je+j-1,:)
+         ekh(:,je+j,:) = ekh(:,je+j-1,:)
+        end do
        end if
      else ! periodic
        if (jbrank .and. jerank) then
-         ekm(:, jb - 1, :) = ekm(:, je, :)
-         ekm(:, je + 1, :) = ekm(:, jb, :)
-         ekh(:, jb - 1, :) = ekh(:, je, :)
-         ekh(:, je + 1, :) = ekh(:, jb, :)
+        do j = 1, jh
+         ekm(:, jb - j, :) = ekm(:, je + j - 1, :)
+         ekm(:, je + j, :) = ekm(:, jb - j + 1, :)
+         ekh(:, jb - j, :) = ekh(:, je + j - 1, :)
+         ekh(:, je + j, :) = ekh(:, jb - j + 1, :)
+        end do
        end if
      end if
 
@@ -482,14 +506,14 @@ contains
          vm(ie + m, :, :) = vm(ib - 1 + m, :, :)
          wm(ib - m, :, :) = wm(ie + 1 - m, :, :)
          wm(ie + m, :, :) = wm(ib - 1 + m, :, :)
-      end do
 
-      if (loneeqn) then
-         e120(ib - m, :, :) = e120(ie + 1 - m, :, :)
-         e120(ie + m, :, :) = e120(ib - 1 + m, :, :)
-         e12m(ib - m, :, :) = e12m(ie + 1 - m, :, :)
-         e12m(ie + m, :, :) = e12m(ib - 1 + m, :, :)
-      end if
+         if (loneeqn) then
+          e120(ib - m, :, :) = e120(ie + 1 - m, :, :)
+          e120(ie + m, :, :) = e120(ib - 1 + m, :, :)
+          e12m(ib - m, :, :) = e12m(ie + 1 - m, :, :)
+          e12m(ie + m, :, :) = e12m(ib - 1 + m, :, :)
+         end if
+      end do
 
       return
    end subroutine xm_periodic
@@ -557,7 +581,7 @@ contains
 
       integer n, m
 
-      do m = 1, ih
+      do m = 1, jh
          u0(:, jb - m, :) = u0(:, je + 1 - m, :)
          u0(:, je + m, :) = u0(:, jb - 1 + m, :)
          v0(:, jb - m, :) = v0(:, je + 1 - m, :)
@@ -570,14 +594,14 @@ contains
          vm(:, je + m, :) = vm(:, jb - 1 + m, :)
          wm(:, jb - m, :) = wm(:, je + 1 - m, :)
          wm(:, je + m, :) = wm(:, jb - 1 + m, :)
-      end do
 
-      if (loneeqn) then
-        e120(:, jb - m, :) = e120(:, je + 1 - m, :)
-        e120(:, je + m, :) = e120(:, jb - 1 + m, :)
-        e12m(:, jb - m, :) = e12m(:, je + 1 - m, :)
-        e12m(:, je + m, :) = e12m(:, jb - 1 + m, :)
-      end if
+         if (loneeqn) then
+          e120(:, jb - m, :) = e120(:, je + 1 - m, :)
+          e120(:, je + m, :) = e120(:, jb - 1 + m, :)
+          e12m(:, jb - m, :) = e12m(:, je + 1 - m, :)
+          e12m(:, je + m, :) = e12m(:, jb - 1 + m, :)
+        end if
+      end do
 
       return
    end subroutine ym_periodic
@@ -642,30 +666,44 @@ contains
 
 
      subroutine xmi_profile
-       use modglobal,      only : ib, ie, jb, je, kb, ke
+       use modglobal,      only : ib, ie, jb, je, kb, ke, ih, jh, kh
        use modfields,      only : u0, um, v0, vm, w0, wm, e120, e12m, uprof, vprof, e12prof
        use modsubgriddata, only : loneeqn
 
-       integer j, k
+       integer i, j, k
 
-       do j = jb - 1, je + 1
-         do k = kb, ke + 1
-           u0(ib, j, k) = uprof(k)
-           um(ib, j, k) = uprof(k)
-           u0(ib - 1, j, k) = 2*u0(ib, j, k) - u0(ib + 1, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
-           um(ib - 1, j, k) = 2*um(ib, j, k) - um(ib + 1, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
-           v0(ib - 1, j, k) = 2*vprof(k) - v0(ib, j, k) ! (v(ib)+v(ib-1))/2 = vprof
-           vm(ib - 1, j, k) = 2*vprof(k) - vm(ib, j, k) ! (v(ib)+v(ib-1))/2 = vprof
-           w0(ib - 1, j, k) = -w0(ib, j, k)
-           wm(ib - 1, j, k) = -wm(ib, j, k)
+       do j = jb - jh, je + jh
+         do k = kb, ke + kh
+          u0(ib, j, k) = uprof(k)
+          um(ib, j, k) = uprof(k)
+          do i = 1, ih
+           u0(ib - i, j, k) = 2*u0(ib-i+1, j, k) - u0(ib-i+2, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
+           um(ib - i, j, k) = 2*um(ib-i+1, j, k) - um(ib-i+2, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
+           if (i==1) then
+            v0(ib - i, j, k) = 2*vprof(k) - v0(ib-i+1, j, k) ! (v(ib)+v(ib-1))/2 = vprof
+            vm(ib - i, j, k) = 2*vprof(k) - vm(ib-i+1, j, k) ! (v(ib)+v(ib-1))/2 = vprof
+           else
+            v0(ib - i, j, k) = 2*v0(ib-i+1, j, k) - v0(ib-i+2, j, k) ! (v(ib-2)+v(ib))/2 = v(ib-1)
+            vm(ib - i, j, k) = 2*vm(ib-i+1, j, k) - vm(ib-i+2, j, k) ! (v(ib-2)+v(ib))/2 = v(ib-1)
+           end if
+           w0(ib - i, j, k) = -w0(ib-i+1, j, k)
+           wm(ib - i, j, k) = -wm(ib-i+1, j, k)
+          end do
          end do
        end do
 
        if (loneeqn) then
-         do j = jb - 1, je + 1
-           do k = kb, ke + 1
-             e120(ib - 1, j, k) = 2*e12prof(k) - e120(ib, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
-             e12m(ib - 1, j, k) = 2*e12prof(k) - e12m(ib, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
+         do j = jb - jh, je + jh
+           do k = kb, ke + kh
+            do i = 1, ih
+              if (i==1) then
+                e120(ib - i, j, k) = 2*e12prof(k) - e120(ib - i + 1, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
+                e12m(ib - i, j, k) = 2*e12prof(k) - e12m(ib - i + 1, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
+              else
+                e120(ib - i, j, k) = 2*e120(ib-i+1, j, k) - e120(ib-i+2, j, k) ! (e12(ib)+e12(ib-2))/2=e12(ib-1)
+                e12m(ib - i, j, k) = 2*e12m(ib-i+1, j, k) - e12m(ib-i+2, j, k) ! (e12(ib)+e12(ib-2))/2=e12(ib-1)
+              endif
+            end do
            end do
          end do
        end if
@@ -674,55 +712,63 @@ contains
 
 
      subroutine xmi_driver
-       use modglobal,      only : ib, ie, jb, je, kb, ke
+       use modglobal,      only : ib, ie, jb, je, kb, ke, ih, jh, kh
        use modinletdata,   only : u0driver, umdriver, v0driver, vmdriver, w0driver, wmdriver
        use modfields,      only : u0, um, v0, vm, w0, wm, e120, e12m, e12prof
        use modsubgriddata, only : loneeqn
 
-       integer j, k
+       integer i, j, k
 
-       do j = jb - 1, je + 1
-         do k = kb, ke !tg3315 removed +1 following above...
-           u0(ib,j,k) = u0driver(j,k) !max(0.,u0driver(j,k))
-           um(ib,j,k) = umdriver(j,k) !max(0.,umdriver(j,k))
-           u0(ib-1,j,k) = u0driver(j,k) !max(0.,u0driver(j,k))
-           um(ib-1,j,k) = umdriver(j,k) !max(0.,umdriver(j,k))
-           ! u0(ib-1,j,k)= 2*u0(ib, j, k) - u0(ib + 1, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
-           ! um(ib-1,j,k)= 2*um(ib, j, k) - um(ib + 1, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
+        do i = 0,ih
+          do j = jb - jh, je + jh
+            do k = kb, ke !tg3315 removed +1 following above...
+              u0(ib-i,j,k) = u0driver(j,k) !max(0.,u0driver(j,k))
+              um(ib-i,j,k) = umdriver(j,k) !max(0.,umdriver(j,k))
+              ! u0(ib,j,k) = u0driver(j,k) !max(0.,u0driver(j,k))
+              ! um(ib,j,k) = umdriver(j,k) !max(0.,umdriver(j,k))
+              ! u0(ib-1,j,k) = u0driver(j,k) !max(0.,u0driver(j,k))
+              ! um(ib-1,j,k) = umdriver(j,k) !max(0.,umdriver(j,k))
+              !! u0(ib-1,j,k)= 2*u0(ib, j, k) - u0(ib + 1, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
+              !! um(ib-1,j,k)= 2*um(ib, j, k) - um(ib + 1, j, k) ! (u(ib+1)+u(ib-1))/2 = u(ib)
+            end do
+          end do
+        end do
 
-           !v0(ib,j,k)   = v0driver(j,k) !max(0.,v0driver(j,k))
-           !vm(ib,j,k)   = vmdriver(j,k) !max(0.,vmdriver(j,k))
-           v0(ib-1,j,k)   = v0driver(j,k) !max(0.,v0driver(j,k))
-           vm(ib-1,j,k)   = vmdriver(j,k) !max(0.,vmdriver(j,k))
-         end do
+        do i = 1,ih
+          do j = jb - jh, je + jh
+            do k = kb, ke !tg3315 removed +1 following above...
+              v0(ib-i,j,k)   = v0driver(j,k) !max(0.,v0driver(j,k))
+              vm(ib-i,j,k)   = vmdriver(j,k) !max(0.,vmdriver(j,k))
+            end do
 
-         do k=kb,ke+1
-           !w0(ib,j,k)   = w0driver(j,k) !max(0.,w0driver(j,k))
-           !wm(ib,j,k)   = wmdriver(j,k) !max(0.,wmdriver(j,k))
-           w0(ib-1,j,k) = w0driver(j,k) !max(0.,w0driver(j,k))
-           wm(ib-1,j,k) = wmdriver(j,k) !max(0.,wmdriver(j,k))
-         end do
-       end do
+            do k=kb,ke+kh
+              w0(ib-i,j,k) = w0driver(j,k) !max(0.,w0driver(j,k))
+              wm(ib-i,j,k) = wmdriver(j,k) !max(0.,wmdriver(j,k))
+            end do
+          end do
+        end do
 
        if (loneeqn) then
-         do j = jb - 1, je + 1
-           do k = kb, ke + 1
+        do i = 1,ih
+         do j = jb - jh, je + jh
+           do k = kb, ke + kh
              ! to be changed in the future: e12 should be taken from recycle plane!
              !e120(ib-1,j,k) = e120driver(j,k)      ! extrapolate e12 from interior
              !e12m(ib-1,j,k) = e12mdriver(j,k)      ! extrapolate e12 from interior
-             e120(ib - 1, j, k) = e120(ib, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
-             e12m(ib - 1, j, k) = e12m(ib, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
+             e120(ib - i, j, k) = e120(ib-i+1, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
+             e12m(ib - i, j, k) = e12m(ib-i+1, j, k) ! (e12(ib)+e12(ib-1))/2=e12prof
            end do
          end do
+        end do
        end if
 
      end subroutine xmi_driver
 
 
      subroutine xTi_profile
-       use modglobal, only : ib, ie, jb, je, kb, ke
+       use modglobal, only : ib, ie, jb, je, kb, ke, ih, jh, kh
        use modfields, only : thl0, thlm, thlprof
-       integer j, k
+       integer i, j, k
 
        ! set ghost cell
        ! do j = jb - 1, je + 1
@@ -731,34 +777,38 @@ contains
        !     thlm(ib - 1, j, k) = 2*thlprof(k) - thlm(ib, j, k)
        !   end do
        ! end do
-       do j = jb - 1, je + 1
-         do k = kb, ke + 1
-           thl0(ib - 1, j, k) = thlprof(k)
-           thlm(ib - 1, j, k) = thlprof(k)
+       do j = jb - jh, je + jh
+         do k = kb, ke + kh
+          do i = 0, ih
+            thl0(ib - i, j, k) = thlprof(k)
+            thlm(ib - i, j, k) = thlprof(k)
+          end do
          end do
        end do
 
-       ! set first internal cell as well
-       do j = jb - 1, je + 1
-        do k = kb, ke
-           thl0(ib, j, k) = thlprof(k)
-           thlm(ib, j, k) = thlprof(k)
-        end do
-       end do
+      !  ! set first internal cell as well
+      !  do j = jb - jh, je + jh
+      !   do k = kb, ke
+      !      thl0(ib, j, k) = thlprof(k)
+      !      thlm(ib, j, k) = thlprof(k)
+      !   end do
+      !  end do
 
      end subroutine xTi_profile
 
 
      subroutine xTi_driver
-       use modglobal,    only : ib, ie, jb, je, kb, ke
+       use modglobal,    only : ib, ie, jb, je, kb, ke, ih, jh, kh
        use modinletdata, only : thl0driver, thlmdriver
        use modfields,    only : thl0, thlm
-       integer j, k
+       integer i, j, k
 
-       do j = jb - 1, je + 1
-         do k = kb, ke + 1
-           thl0(ib - 1, j, k) = thl0driver(j, k)
-           thlm(ib - 1, j, k) = thlmdriver(j, k)
+       do j = jb - jh, je + jh
+         do k = kb, ke + kh
+          do i = 1, ih
+           thl0(ib - i, j, k) = thl0driver(j, k)
+           thlm(ib - i, j, k) = thlmdriver(j, k)
+          end do
          end do
        end do
 
@@ -766,14 +816,21 @@ contains
 
 
      subroutine xqi_profile
-       use modglobal,    only : ib, ie, jb, je, kb, ke
+       use modglobal,    only : ib, ie, jb, je, kb, ke, ih, jh, kh
        use modfields,    only : qt0, qtm, qtprof
-       integer j, k
+       integer i, j, k
 
-       do j = jb - 1, je + 1
-         do k = kb, ke + 1
-           qt0(ib - 1, j, k) = 2*qtprof(k) - qt0(ib, j, k)
-           qtm(ib - 1, j, k) = 2*qtprof(k) - qtm(ib, j, k)
+       do j = jb - jh, je + jh
+         do k = kb, ke + kh
+          do i = 1, ih
+            if (i==1) then
+              qt0(ib - i, j, k) = 2*qtprof(k) - qt0(ib - i + 1, j, k)
+              qtm(ib - i, j, k) = 2*qtprof(k) - qtm(ib - i + 1, j, k)
+            else
+              qt0(ib - i, j, k) = 2*qt0(ib - i + 1, j, k) - qt0(ib - i + 2, j, k)
+              qtm(ib - i, j, k) = 2*qtm(ib - i + 1, j, k) - qtm(ib - i + 2, j, k)
+            end if
+          end do
          end do
        end do
 
@@ -781,16 +838,18 @@ contains
 
 
    subroutine xqi_driver
-     use modglobal,    only : ib, ie, jb, je, kb, ke
+     use modglobal,    only : ib, ie, jb, je, kb, ke, ih, jh, kh
      use modinletdata, only : qt0driver, qtmdriver
      use modfields,    only : qt0, qtm
 
-     integer j, k
+     integer i, j, k
 
-     do j = jb - 1, je + 1
-       do k = kb, ke + 1
-         qt0(ib - 1, j, k) = qt0driver(j, k)
-         qtm(ib - 1, j, k) = qtmdriver(j, k)
+     do j = jb - jh, je + jh
+       do k = kb, ke + kh
+        do i = 1, ih
+         qt0(ib - i, j, k) = qt0driver(j, k)
+         qtm(ib - i, j, k) = qtmdriver(j, k)
+        end do
        end do
      end do
 
@@ -798,13 +857,13 @@ contains
 
 
    subroutine xsi_profile
-     use modglobal,    only : ib, ie, jb, je, kb, ke, nsv, ihc
+     use modglobal,    only : ib, ie, jb, je, kb, ke, nsv, ihc, khc
      use modfields,    only : sv0, svm, svprof
 
      integer j, k, n, m
 
      do j = jb, je
-       do k = kb, ke + 1
+       do k = kb, ke + khc
          do n = 1, nsv
            do m = 1, ihc
              sv0(ib - m, j, k, n) = 2*svprof(k, n) - sv0(ib - m + 1, j, k, n)
@@ -818,7 +877,7 @@ contains
 
 
      subroutine xsi_custom
-       use modglobal,    only : ib, ie, jb, je, jtot, kb, ke, nsv, ihc
+       use modglobal,    only : ib, ie, jb, je, jtot, kb, ke, nsv, ihc, khc
        use modfields,    only : sv0, svm, svprof
        use decomp_2d,    only : zstart
 
@@ -826,7 +885,7 @@ contains
 
        do j = jb, je
           if (j + zstart(2) - 1 == jtot/2) then
-             do k = kb, ke + 1
+             do k = kb, ke + khc
                 do n = 1, nsv
                    do m = 1, ihc
                       sv0(ib - m, j-1:j+1, k, n) = 2*svprof(k, n) - sv0(ib - m + 1, j-1:j+1, k, n)
@@ -847,8 +906,8 @@ contains
 
      integer j, k, n, m
 
-     do j = jb - 1, je + 1
-       do k = kb, ke + 1
+     do j = jb - jhc, je + jhc
+       do k = kb, ke + khc
          do n = 1, nsv
            do m = 1, ihc
              sv0(ib - m, j, k, n) = sv0driver(j, k, n)
@@ -862,91 +921,106 @@ contains
 
 
    subroutine xmo_convective
-     use modglobal,      only : ie, dxi, rk3step, dt
+     use modglobal,      only : ie, dxi, rk3step, dt, ih
      use modfields,      only : u0, um, v0, vm, w0, wm, e120, e12m, uouttot
      use modsubgriddata, only : loneeqn
      real rk3coef
+     integer i
 
      rk3coef = dt/(4.-dble(rk3step))
 
-     v0(ie + 1, :, :) = v0(ie+1, :, :) - (v0(ie+1, :, :) - v0(ie, :, :))*dxi*rk3coef*uouttot
-     w0(ie + 1, :, :) = w0(ie+1, :, :) - (w0(ie+1, :, :) - w0(ie, :, :))*dxi*rk3coef*uouttot
-     vm(ie + 1, :, :) = vm(ie+1, :, :) - (vm(ie+1, :, :) - vm(ie, :, :))*dxi*rk3coef*uouttot
-     wm(ie + 1, :, :) = wm(ie+1, :, :) - (wm(ie+1, :, :) - wm(ie, :, :))*dxi*rk3coef*uouttot
+     do i = 1, ih
+      v0(ie + i, :, :) = v0(ie+i, :, :) - (v0(ie+i, :, :) - v0(ie+i-1, :, :))*dxi*rk3coef*uouttot
+      w0(ie + i, :, :) = w0(ie+i, :, :) - (w0(ie+i, :, :) - w0(ie+i-1, :, :))*dxi*rk3coef*uouttot
+      vm(ie + i, :, :) = vm(ie+i, :, :) - (vm(ie+i, :, :) - vm(ie+i-1, :, :))*dxi*rk3coef*uouttot
+      wm(ie + i, :, :) = wm(ie+i, :, :) - (wm(ie+i, :, :) - wm(ie+i-1, :, :))*dxi*rk3coef*uouttot
 
-     if (loneeqn) then
-       e120(ie + 1, :, :) = e120(ie, :, :) - (e120(ie + 1, :, :) - e120(ie, :, :))*dxi*rk3coef*uouttot
-       e12m(ie + 1, :, :) = e12m(ie, :, :) - (e12m(ie + 1, :, :) - e12m(ie, :, :))*dxi*rk3coef*uouttot
-     end if
-
+      if (loneeqn) then
+        e120(ie + i, :, :) = e120(ie+i-1, :, :) - (e120(ie + i, :, :) - e120(ie+i-1, :, :))*dxi*rk3coef*uouttot
+        e12m(ie + i, :, :) = e12m(ie+i-1, :, :) - (e12m(ie + i, :, :) - e12m(ie+i-1, :, :))*dxi*rk3coef*uouttot
+      end if
+     end do
    end subroutine xmo_convective
 
 
    subroutine xmo_Neumann
-     use modglobal,      only : ie
+     use modglobal,      only : ie, ih
      use modfields,      only : u0, um, v0, vm, w0, wm, e120, e12m
      use modsubgriddata, only : loneeqn
+     integer i
 
-     v0(ie + 1, :, :) = v0(ie, :, :)
-     w0(ie + 1, :, :) = w0(ie, :, :)
-     vm(ie + 1, :, :) = vm(ie, :, :)
-     wm(ie + 1, :, :) = wm(ie, :, :)
+     do i = 1, ih
+      v0(ie + i, :, :) = v0(ie+i-1, :, :)
+      w0(ie + i, :, :) = w0(ie+i-1, :, :)
+      vm(ie + i, :, :) = vm(ie+i-1, :, :)
+      wm(ie + i, :, :) = wm(ie+i-1, :, :)
 
-     if (loneeqn) then
-       e120(ie + 1, :, :) = e120(ie, :, :)
-       e12m(ie + 1, :, :) = e12m(ie, :, :)
-     end if
+      if (loneeqn) then
+        e120(ie + i, :, :) = e120(ie+i-1, :, :)
+        e12m(ie + i, :, :) = e12m(ie+i-1, :, :)
+      end if
+     end do
 
    end subroutine xmo_Neumann
 
 
    subroutine xTo_convective
-     use modglobal, only : ie, dxi, rk3step, dt
+     use modglobal, only : ie, dxi, rk3step, dt, ih
      use modfields, only : thl0, thlm, uouttot
      real rk3coef
+     integer i
 
      rk3coef = dt/(4.-dble(rk3step))
 
-     thl0(ie + 1, :, :) = thl0(ie+1, :, :) - (thl0(ie + 1, :, :) - thl0(ie, :, :))*dxi*rk3coef*uouttot
-     thlm(ie + 1, :, :) = thlm(ie+1, :, :) - (thlm(ie + 1, :, :) - thlm(ie, :, :))*dxi*rk3coef*uouttot
+     do i = 1, ih
+      thl0(ie + i, :, :) = thl0(ie+i, :, :) - (thl0(ie+i, :, :) - thl0(ie+i-1, :, :))*dxi*rk3coef*uouttot
+      thlm(ie + i, :, :) = thlm(ie+i, :, :) - (thlm(ie+i, :, :) - thlm(ie+i-1, :, :))*dxi*rk3coef*uouttot
+     end do
 
    end subroutine xTo_convective
 
 
    subroutine xTo_Neumann
-     use modglobal, only : ie
+     use modglobal, only : ie, ih
      use modfields, only : thl0, thlm
+     integer i
 
-     thl0(ie + 1, :, :) = thl0(ie, :, :)
-     thlm(ie + 1, :, :) = thlm(ie, :, :)
+     do i = 1, ih
+      thl0(ie + i, :, :) = thl0(ie+i-1, :, :)
+      thlm(ie + i, :, :) = thlm(ie+i-1, :, :)
+     end do
 
    end subroutine xTo_Neumann
 
 
    subroutine xqo_convective
-     use modglobal, only : ie, dxi, rk3step, dt
+     use modglobal, only : ie, dxi, rk3step, dt, ih
      use modfields, only : qt0, qtm, uouttot
      real rk3coef
+     integer i
 
      rk3coef = dt/(4.-dble(rk3step))
 
-     qt0(ie + 1, :, :) = qt0(ie, :, :) - (qt0(ie + 1, :, :) - qt0(ie, :, :))*dxi*rk3coef*uouttot
-     qtm(ie + 1, :, :) = qtm(ie, :, :) - (qtm(ie + 1, :, :) - qtm(ie, :, :))*dxi*rk3coef*uouttot
+     do i = 1, ih
+      qt0(ie + i, :, :) = qt0(ie+i-1, :, :) - (qt0(ie+i, :, :) - qt0(ie+i-1, :, :))*dxi*rk3coef*uouttot
+      qtm(ie + i, :, :) = qtm(ie+i-1, :, :) - (qtm(ie+i, :, :) - qtm(ie+i-1, :, :))*dxi*rk3coef*uouttot
+     end do
 
    end subroutine xqo_convective
 
 
    subroutine xso_convective
-     use modglobal, only : ie, rk3step, dt, dxi, nsv
+     use modglobal, only : ie, rk3step, dt, dxi, nsv, ih
      use modfields, only :sv0, svm, uouttot
      real rk3coef
-     integer n
+     integer n, i
 
      rk3coef = dt/(4.-dble(rk3step))
-
+     do i = 1, ih
      do n = 1, nsv
-       sv0(ie + 1, :, :, n) = sv0(ie + 1, :, :, n) - (sv0(ie + 1, :, :, n) - sv0(ie, :, :, n))*dxi*rk3coef*uouttot
-       svm(ie + 1, :, :, n) = svm(ie + 1, :, :, n) - (svm(ie + 1, :, :, n) - svm(ie, :, :, n))*dxi*rk3coef*uouttot
+       sv0(ie + i, :, :, n) = sv0(ie + i, :, :, n) - (sv0(ie + i, :, :, n) - sv0(ie+i-1, :, :, n))*dxi*rk3coef*uouttot
+       svm(ie + i, :, :, n) = svm(ie + i, :, :, n) - (svm(ie + i, :, :, n) - svm(ie+i-1, :, :, n))*dxi*rk3coef*uouttot
+     end do
      end do
 
    end subroutine xso_convective
@@ -971,29 +1045,43 @@ contains
 
 
    subroutine ymi_profile
-     use modglobal,      only : ib, ie, jb, je, kb, ke
+     use modglobal,      only : ib, ie, jb, je, kb, ke, ih, jh, kh
      use modfields,      only : u0, um, v0, vm, w0, wm, e120, e12m, uprof, vprof, e12prof
      use modsubgriddata, only : loneeqn
-     integer i, k
+     integer i, j, k
 
-     do i = ib - 1, ie + 1
-       do k = kb, ke + 1
+     do i = ib - ih, ie + ih
+       do k = kb, ke + kh
          v0(i, jb, k) = vprof(k)
          vm(i, jb, k) = vprof(k)
-         v0(i, jb - 1, k) = 2*v0(i, jb, k) - v0(i, jb + 1, k)
-         vm(i, jb - 1, k) = 2*vm(i, jb, k) - vm(i, jb + 1, k)
-         u0(i, jb - 1, k) = 2*uprof(k) - u0(i, jb, k)
-         um(i, jb - 1, k) = 2*uprof(k) - um(i, jb, k)
-         w0(i, jb - 1, k) = -w0(i, jb, k)
-         wm(i, jb - 1, k) = -wm(i, jb, k)
+         do j = 1, jh
+          v0(i, jb - j, k) = 2*v0(i, jb - j + 1, k) - v0(i, jb - j + 2, k)
+          vm(i, jb - j, k) = 2*vm(i, jb - j + 1, k) - vm(i, jb - j + 2, k)
+          if (j==1) then
+            u0(i, jb - j, k) = 2*uprof(k) - u0(i, jb - j + 1, k)
+            um(i, jb - j, k) = 2*uprof(k) - um(i, jb - j + 1, k)
+          else
+            u0(i, jb - j, k) = 2*u0(i, jb - j + 1, k) - u0(i, jb - j + 2, k)
+            um(i, jb - j, k) = 2*um(i, jb - j + 1, k) - um(i, jb - j + 2, k)
+          end if
+          w0(i, jb - j, k) = -w0(i, jb - j + 1, k)
+          wm(i, jb - j, k) = -wm(i, jb - j + 1, k)
+         end do
        end do
      end do
 
      if (loneeqn) then
-       do i = ib - 1, ie + 1
-         do k = kb, ke + 1
-           e120(i, jb - 1, k) = 2*e12prof(k) - e120(i, jb - 1, k)
-           e12m(i, jb - 1, k) = 2*e12prof(k) - e12m(i, jb - 1, k)
+       do i = ib - ih, ie + ih
+         do k = kb, ke + kh
+          do j = 1, jh
+            if (j==1) then
+              e120(i, jb - j, k) = 2*e12prof(k) - e120(i, jb - j + 1, k)
+              e12m(i, jb - j, k) = 2*e12prof(k) - e12m(i, jb - j + 1, k)
+            else
+              e120(i, jb - j, k) = 2*e120(i, jb - j + 1, k) - e120(i, jb - j + 2, k)
+              e12m(i, jb - j, k) = 2*e12m(i, jb - j + 1, k) - e12m(i, jb - j + 2, k)
+            end if
+          end do
          end do
        end do
      end if
@@ -1002,15 +1090,22 @@ contains
 
 
    subroutine yTi_profile
-     use modglobal, only : ib, ie, jb, je, kb, ke
+     use modglobal, only : ib, ie, jb, je, kb, ke, ih, jh, kh
      use modfields, only : thl0, thlm, thlprof
 
-     integer i, k
+     integer i, j, k
 
-     do i = ib - 1, ie + 1
-       do k = kb, ke + 1
-         thl0(i, jb - 1, k) = 2*thlprof(k) - thl0(i, jb, k)
-         thlm(i, jb - 1, k) = 2*thlprof(k) - thlm(i, jb, k)
+     do i = ib - ih, ie + ih
+       do k = kb, ke + kh
+        do j = 1, jh
+          if (j==1) then
+            thl0(i, jb - j, k) = 2*thlprof(k) - thl0(i, jb - j + 1, k)
+            thlm(i, jb - j, k) = 2*thlprof(k) - thlm(i, jb - j + 1, k)
+          else
+            thl0(i, jb - j, k) = 2*thl0(i, jb - j + 1, k) - thl0(i, jb - j + 2, k)
+            thlm(i, jb - j, k) = 2*thlm(i, jb - j + 1, k) - thlm(i, jb - j + 2, k)
+          end if
+        end do
        end do
      end do
 
@@ -1018,15 +1113,22 @@ contains
 
 
    subroutine yqi_profile
-     use modglobal, only : ib, ie, jb, je, kb, ke
+     use modglobal, only : ib, ie, jb, je, kb, ke, ih, jh, kh
      use modfields, only : qt0, qtm, qtprof
 
-     integer i, k
+     integer i, j, k
 
-     do i = jb - 1, ie + 1
-       do k = kb, ke + 1
-         qt0(i, jb - 1, k) = 2*qtprof(k) - qt0(i, jb, k)
-         qtm(i, jb - 1, k) = 2*qtprof(k) - qtm(i, jb, k)
+     do i = jb - jh, ie + jh
+       do k = kb, ke + kh
+        do j = 1, jh
+          if (j==1) then
+            qt0(i, jb - j, k) = 2*qtprof(k) - qt0(i, jb - j + 1, k)
+            qtm(i, jb - j, k) = 2*qtprof(k) - qtm(i, jb - j + 1, k)
+          else
+            qt0(i, jb - j, k) = 2*qt0(i, jb - j + 1, k) - qt0(i, jb - j + 2, k)
+            qtm(i, jb - j, k) = 2*qtm(i, jb - j + 1, k) - qtm(i, jb - j + 2, k)
+          end if
+        end do
        end do
      end do
 
@@ -1034,15 +1136,15 @@ contains
 
 
    subroutine ysi_profile
-     use modglobal, only : ib, ie, jb, je, kb, ke, nsv, ihc
+     use modglobal, only : ib, ie, jb, je, kb, ke, nsv, ihc, jhc, khc
      use modfields, only : sv0, svm, svprof
 
      integer i, k, n, m
 
-     do i = ib - 1, ie + 1
-       do k = kb, ke + 1
+     do i = ib - ihc, ie + ihc
+       do k = kb, ke + khc
          do n = 1, nsv
-           do m = 1, ihc
+           do m = 1, jhc
              sv0(i, jb - m, k, n) = 2*svprof(k, n) - sv0(i, jb - m + 1, k, n)
              svm(i, jb - m, k, n) = 2*svprof(k, n) - svm(i, jb - m + 1, k, n)
            end do
@@ -1054,70 +1156,81 @@ contains
 
 
    subroutine ymo_convective
-     use modglobal,      only : je, dyi, rk3step, dt
+     use modglobal,      only : je, dyi, rk3step, dt, jh
      use modfields,      only : u0, um, v0, vm, w0, wm, e120, e12m, vouttot
      use modsubgriddata, only : loneeqn
 
      real rk3coef
+     integer j
 
      rk3coef = dt/(4.-dble(rk3step))
 
-     ! change to vouttot
-     u0(:, je + 1, :) = u0(:, je + 1, :) - (u0(:, je + 1, :) - u0(:, je, :))*dyi*rk3coef*vouttot
-     um(:, je + 1, :) = um(:, je + 1, :) - (um(:, je + 1, :) - um(:, je, :))*dyi*rk3coef*vouttot
-     w0(:, je + 1, :) = w0(:, je + 1, :) - (w0(:, je + 1, :) - w0(:, je, :))*dyi*rk3coef*vouttot
-     wm(:, je + 1, :) = wm(:, je + 1, :) - (wm(:, je + 1, :) - wm(:, je, :))*dyi*rk3coef*vouttot
+     do j = 1, jh
+      ! change to vouttot
+      u0(:, je + j, :) = u0(:, je + j, :) - (u0(:, je + j, :) - u0(:, je + j - 1, :))*dyi*rk3coef*vouttot
+      um(:, je + j, :) = um(:, je + j, :) - (um(:, je + j, :) - um(:, je + j - 1, :))*dyi*rk3coef*vouttot
+      w0(:, je + j, :) = w0(:, je + j, :) - (w0(:, je + j, :) - w0(:, je + j - 1, :))*dyi*rk3coef*vouttot
+      wm(:, je + j, :) = wm(:, je + j, :) - (wm(:, je + j, :) - wm(:, je + j - 1, :))*dyi*rk3coef*vouttot
 
-     if (loneeqn) then
-       e120(:, je + 1, :) = e120(:, je + 1, :) - (e120(:, je + 1, :) - e120(:, je, :))*dyi*rk3coef*vouttot
-       e12m(:, je + 1, :) = e12m(:, je + 1, :) - (e12m(:, je + 1, :) - e12m(:, je, :))*dyi*rk3coef*vouttot
-     end if
+      if (loneeqn) then
+        e120(:, je + j, :) = e120(:, je + j, :) - (e120(:, je + j, :) - e120(:, je + j - 1, :))*dyi*rk3coef*vouttot
+        e12m(:, je + j, :) = e12m(:, je + j, :) - (e12m(:, je + j, :) - e12m(:, je + j - 1, :))*dyi*rk3coef*vouttot
+      end if
+     end do
 
    end subroutine ymo_convective
 
 
    subroutine yTo_convective
 
-     use modglobal, only : je, dyi, rk3step, dt
+     use modglobal, only : je, dyi, rk3step, dt, jh
      use modfields, only : thl0, thlm, v0, vouttot
 
      real rk3coef
+     integer j
 
      rk3coef = dt/(4.-dble(rk3step))
 
-     thl0(:, je + 1, :) = thl0(:, je + 1, :) - (thl0(:, je + 1, :) - thl0(:, je, :))*dyi*rk3coef*vouttot
-     thlm(:, je + 1, :) = thlm(:, je + 1, :) - (thlm(:, je + 1, :) - thlm(:, je, :))*dyi*rk3coef*vouttot
+     do j = 1, jh
+      thl0(:, je + j, :) = thl0(:, je + j, :) - (thl0(:, je + j, :) - thl0(:, je + j - 1, :))*dyi*rk3coef*vouttot
+      thlm(:, je + j, :) = thlm(:, je + j, :) - (thlm(:, je + j, :) - thlm(:, je + j - 1, :))*dyi*rk3coef*vouttot
+     end do
 
    end subroutine yTo_convective
 
 
    subroutine yqo_convective
 
-     use modglobal, only : je, dyi, rk3step, dt
+     use modglobal, only : je, dyi, rk3step, dt, jh
      use modfields, only : qt0, qtm, v0, vouttot
 
      real rk3coef
+     integer j
      rk3coef = dt/(4.-dble(rk3step))
 
-     qt0(:, je + 1, :) = qt0(:, je + 1, :) - (qt0(:, je + 1, :) - qt0(:, je, :))*dyi*rk3coef*vouttot
-     qtm(:, je + 1, :) = qtm(:, je + 1, :) - (qtm(:, je + 1, :) - qtm(:, je, :))*dyi*rk3coef*vouttot
+     do j = 1, jh
+      qt0(:, je + j, :) = qt0(:, je + j, :) - (qt0(:, je + j, :) - qt0(:, je + j - 1, :))*dyi*rk3coef*vouttot
+      qtm(:, je + j, :) = qtm(:, je + j, :) - (qtm(:, je + j, :) - qtm(:, je + j - 1, :))*dyi*rk3coef*vouttot
+     end do
 
    end subroutine yqo_convective
 
 
    subroutine yso_convective
 
-     use modglobal, only : je, rk3step, dt, dyi, nsv
+     use modglobal, only : je, rk3step, dt, dyi, nsv, jhc
      use modfields, only :sv0, svm, v0, vouttot
 
      real rk3coef
-     integer n
+     integer n, j
 
      rk3coef = dt/(4.-dble(rk3step))
 
+     do j = 1, jhc
      do n = 1, nsv
-       sv0(:, je + 1, :, n) = sv0(:, je + 1, :, n) - (sv0(:, je + 1, :, n) - sv0(:, je, :, n))*dyi*rk3coef*vouttot
-       svm(:, je + 1, :, n) = svm(:, je + 1, :, n) - (svm(:, je + 1, :, n) - svm(:, je, :, n))*dyi*rk3coef*vouttot
+       sv0(:, je + j, :, n) = sv0(:, je + j, :, n) - (sv0(:, je + j, :, n) - sv0(:, je + j - 1, :, n))*dyi*rk3coef*vouttot
+       svm(:, je + j, :, n) = svm(:, je + j, :, n) - (svm(:, je + j, :, n) - svm(:, je + j - 1, :, n))*dyi*rk3coef*vouttot
+     end do
      end do
 
    end subroutine yso_convective
@@ -1194,8 +1307,10 @@ contains
          do i = ib, ie
            pwp(i, j, kb)  = 0.
            !pwp(i, j, ke + 1) = wm(i, j, ke+1) * rk3coefi - (-pres0ij(ke) - pres0(i,j,ke)) * dzhi(ke+1) ! Doesn't work
-           pwp(i, j, ke + 1) = wm(i, j, ke+1) * rk3coefi + 2 * pres0ij(ke)*dzhi(ke+1)
-           wp(i, j, ke + 1) = pwp(i, j, ke+1) - wm(i,j,ke+1) * rk3coefi
+           do k = 1, kh
+            pwp(i, j, ke + k) = wm(i, j, ke+k) * rk3coefi + 2 * pres0ij(ke+k-1)*dzhi(ke+k)
+            wp(i, j, ke + k) = pwp(i, j, ke+k) - wm(i,j,ke+k) * rk3coefi
+           end do
          end do
        end do
      end select !BCtopm
@@ -1205,7 +1320,9 @@ contains
        if (ibrank .and. ierank) then ! not parallelised in x
          do k = kb, ke
             do j = jb, je
-               pup(ie+1, j, k) = pup(ib, j, k) ! cyclic
+              do i = 1, ih
+               pup(ie+i, j, k) = pup(ib-i+1, j, k) ! cyclic
+              end do
             end do
          end do
        end if
@@ -1213,7 +1330,7 @@ contains
      case(BCxm_profile)
        if (ibrank) then
          do k=kb,ke
-           do j=jb-1,je+1
+           do j=jb-jh,je+jh
              pup(ib, j, k) = uprof(k) * rk3coefi
              up(ib, j, k) = 0.
            end do
@@ -1221,24 +1338,29 @@ contains
        end if
 
        if (ierank) then
-         do k = kb+1, ke
-           do j = jb-1, je+1
+         do k = kb+kh, ke
+           do j = jb-jh, je+jh
+            do i = 1, ih
              ! convective
-             pup(ie+1, j, k) = um(ie+1, j, k) * rk3coefi - (u0(ie+1, j, k) - u0(ie,j,k)) * dxi * uouttot !u0(ie,j,k) ! du/dt +u*du/dx=0 -> pup(i)=um(i)/rk3coef -um(i)*(um(i)-um(i-1))/dxf(i-1)
+             pup(ie+i, j, k) = um(ie+i, j, k) * rk3coefi - (u0(ie+i, j, k) - u0(ie+i-1,j,k)) * dxi * uouttot !u0(ie,j,k) ! du/dt +u*du/dx=0 -> pup(i)=um(i)/rk3coef -um(i)*(um(i)-um(i-1))/dxf(i-1)
              ! Neumann
              !pup(ie+1,j,k) = pup(ie,j,k)
-             up(ie+1, j, k) = pup(ie+1, j, k) - um(ie+1,j,k)*rk3coefi
+             up(ie+i, j, k) = pup(ie+i, j, k) - um(ie+i,j,k)*rk3coefi
+            end do
            end do
          end do
-         ! Neumann at bottom - performs better with no slip
-         pup(ie+1, :, kb) = pup(ie, :, kb)
-         up(ie+1, :, kb) = pup(ie+1,: , kb) - um(ie+1, :, kb) * rk3coefi
+
+         do i = 1, ih
+          ! Neumann at bottom - performs better with no slip
+          pup(ie+i, :, kb) = pup(ie+i-1, :, kb)
+          up(ie+i, :, kb) = pup(ie+i,: , kb) - um(ie+i, :, kb) * rk3coefi
+         end do
        end if
 
      case(BCxm_driver)
        if (ibrank) then
          do k = kb, ke
-           do j = jb - 1, je + 1
+           do j = jb - jh, je + jh
              pup(ib, j, k) = u0driver(j, k) * rk3coefi
              up(ib, j, k) = 0. ! u(ib) only evolves according to pressure correction
            end do
@@ -1247,11 +1369,13 @@ contains
 
        if (ierank) then
          do k = kb, ke
-           do j = jb-1, je+1
-             pup(ie+1, j, k) = um(ie+1, j, k) * rk3coefi - (u0(ie+1, j, k) - u0(ie, j, k)) * dxi * uouttot    ! du/dt +u*du/dx=0 -> pup(i)=um(i)/rk3coef -um(i)*(um(i)-um(i-1))/dxf(i-1)
+           do j = jb-jh, je+jh
+            do i = 1, ih
+             pup(ie+i, j, k) = um(ie+i, j, k) * rk3coefi - (u0(ie+i, j, k) - u0(ie+i-1, j, k)) * dxi * uouttot    ! du/dt +u*du/dx=0 -> pup(i)=um(i)/rk3coef -um(i)*(um(i)-um(i-1))/dxf(i-1)
              ! !Neumann
              !pup(ie+1,j,k) = pup(ie,j,k)
-             up(ie+1, j, k) = pup(ie+1, j, k) - um(ie+1, j, k) * rk3coefi
+             up(ie+i, j, k) = pup(ie+i, j, k) - um(ie+i, j, k) * rk3coefi
+            end do
            end do
          end do
          ! Neumann at bottom - performs better with no slip
@@ -1265,7 +1389,9 @@ contains
       if (jbrank .and. jerank) then ! not parallelised in y
         do k = kb, ke
            do i = ib, ie
-              pvp(i, je+1, k) = pvp(i, jb, k) ! cyclic
+            do j = 1, jh
+              pvp(i, je+j, k) = pvp(i, jb-j+1, k) ! cyclic
+            end do
            end do
         end do
       end if
@@ -1273,7 +1399,7 @@ contains
     case(BCym_profile)
       if (jbrank) then
         do k = kb, ke
-          do i = ib-1, ie+1
+          do i = ib-ih, ie+ih
             pvp(i,jb,k) = vprof(k)*rk3coefi
             vp(i,jb,k) = 0.
           end do
@@ -1282,14 +1408,18 @@ contains
 
       if (jerank) then
         do k = kb, ke
-          do i = ib-1, ie+1
-            ! change to vouttot
-            pvp(i, je+1, k) = vm(i, je+1, k) * rk3coefi - (v0(i, je+1, k) - v0(i, je, k)) * dyi * vouttot
-            vp(i, je+1, k) = pvp(i, je+1, k) - vm(i,je+1,k)*rk3coefi
+          do i = ib-ih, ie+ih
+            do j = 1, jh
+              ! change to vouttot
+              pvp(i, je+j, k) = vm(i, je+j, k) * rk3coefi - (v0(i, je+j, k) - v0(i, je+j-1, k)) * dyi * vouttot
+              vp(i, je+j, k) = pvp(i, je+j, k) - vm(i,je+j,k)*rk3coefi
+            end do
           end do
         end do
-        pvp(:, je+1, kb) = pvp(:, je, kb)
-        vp(:, je+1, kb) = pvp(:, je+1, kb) - vm(:, je+1, kb)*rk3coefi
+        do j = 1, jh
+          pvp(:, je+j, kb) = pvp(:, je+j-1, kb)
+          vp(:, je+j, kb) = pvp(:, je+j, kb) - vm(:, je+j, kb)*rk3coefi
+        end do
       end if
 
     end select
@@ -1322,10 +1452,12 @@ contains
        if (ibrank .and. ierank) then
          do j = jb, je
            do k = kb, ke
-             p(ib-1, j, k) = p(ie, j, k)
-             p(ie+1, j, k) = p(ib, j, k)
+            do i = 1, ih
+             p(ib-i, j, k) = p(ie+i-1, j, k)
+             p(ie+i, j, k) = p(ib-i+1, j, k)
              !pres0(ib - 1, j, k) = pres0(ie, j, k)
              !pres0(ie + 1, j, k) = pres0(ib, j, k)
+            end do
            end do
          end do
        end if
@@ -1333,18 +1465,22 @@ contains
      else
        if (ibrank) then
          do k = kb, ke
-           do j = jb-1, je+1
-             p(ib-1, j, k) = p(ib, j, k)
-             pres0(ib-1, j, k) = pres0(ib, j, k)
+           do j = jb-jh, je+jh
+            do i = 1, ih
+             p(ib-i, j, k) = p(ib-i+1, j, k)
+             pres0(ib-i, j, k) = pres0(ib-i+1, j, k)
+            end do
            end do
          end do
        end if
 
        if (ierank) then
          do k = kb, ke
-           do j = jb-1, je+1
-             p(ie+1, j, k) = p(ie, j, k)
-             pres0(ie+1, j, k) = pres0(ie, j, k)
+           do j = jb-jh, je+jh
+            do i = 1, ih
+             p(ie+i, j, k) = p(ie+i-1, j, k)
+             pres0(ie+i, j, k) = pres0(ie+i-1, j, k)
+            end do
            end do
          end do
        end if
@@ -1355,28 +1491,34 @@ contains
        if (jbrank .and. jerank) then
          do i = ib, ie
            do k = kb, ke
-             p(i, jb-1, k) = p(i, je, k)
-             p(i, je+1, k) = p(i, jb, k)
+            do j = 1, jh
+             p(i, jb-j, k) = p(i, je+j-1, k)
+             p(i, je+j, k) = p(i, jb-j+1, k)
              !pres0(ib - 1, j, k) = pres0(ie, j, k)
              !pres0(ie + 1, j, k) = pres0(ib, j, k)
+            end do
            end do
          end do
        end if
      else
        if (jbrank) then
          do k = kb, ke
-           do i = ib-1, ie+1
-             p(i,jb-1,k) = p(i,jb,k)
-             pres0(i,jb-1,k) = pres0(i,jb,k)
+           do i = ib-ih, ie+ih
+            do j = 1, jh
+             p(i,jb-j,k) = p(i,jb-j+1,k)
+             pres0(i,jb-j,k) = pres0(i,jb-j+1,k)
+            end do
            enddo
          enddo
        end if
 
        if (jerank) then
          do k = kb, ke
-           do i = ib-1, ie+1
-             p(i, je+1, k) = p(i,je,k)
-             pres0(i, je+1, k) = pres0(i,je,k)
+           do i = ib-ih, ie+ih
+            do j = 1, jh
+             p(i, je+j, k) = p(i,je+j-1,k)
+             pres0(i, je+j, k) = pres0(i,je+j-1,k)
+            end do
            end do
          end do
        end if
@@ -1454,11 +1596,16 @@ contains
       real, intent(inout) :: field(ib - ih:ie + ih, jb - jh:je + jh, kb - kh:ke + kh)
       real, intent(in)    ::    ek(ib - ih:ie + ih, jb - jh:je + jh, kb - kh:ke + kh)
       real, intent(in)    :: flux
+      integer k
       !
       if (abs(flux) .le. eps1) then !it's zero-flux, we don't need to do the calculation
-         field(:, :, ke + 1) = field(:, :, ke)
+         do k = 1, kh
+          field(:, :, ke + k) = field(:, :, ke + k - 1)
+         end do
       else
-         field(:, :, ke + 1) = field(:, :, ke) + dzh(ke + 1)*flux/(dzhi(ke + 1)*(0.5*(dzf(ke)*ek(:, :, ke + 1) + dzf(ke + 1)*ek(:, :, ke))))
+        do k = 1, kh
+         field(:, :, ke + k) = field(:, :, ke + k - 1) + dzh(ke + k)*flux/(dzhi(ke + k)*(0.5*(dzf(ke+k-1)*ek(:, :, ke + k) + dzf(ke + k)*ek(:, :, ke+k-1))))
+        end do
       end if
       !
    end subroutine fluxtop
@@ -1468,10 +1615,13 @@ contains
       use modmpi, only : myid
       real, intent(inout) :: field(ib - ih:ie + ih, jb - jh:je + jh, kb - kh:ke + kh)
       real, intent(in)    :: val
+      integer k
 
       ! (field(i, j, kp)*dzf(k) + field(i, j, k)*dzf(kp))*dzhi(kp)*0.5 = val
       !field(:,:,ke+1) = (2.*val*dzh(ke+1) - field(:,:,ke)*dzf(ke+1)) * dzfi(ke)
-      field(:, :, ke + 1) = 2*val - field(:, :, ke)
+      do k = 1, kh
+        field(:, :, ke + k) = 2*val - field(:, :, ke + k - 1)
+      end do
       !if (myid == 0) write(*,*) (field(40, 1, ke+1)*dzf(ke) + field(40, 1, ke)*dzf(ke+1))*dzhi(ke+1)*0.5
 
    end subroutine valuetop

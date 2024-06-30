@@ -997,7 +997,15 @@ module modstartup
          call MPI_BCAST(thlprof, kmax, MY_REAL, 0, comm3d, mpierr)
          call MPI_BCAST(qtprof, kmax, MY_REAL, 0, comm3d, mpierr)
 
-         do k = kb, ke
+         do k = 1,kh
+            uprof(ke+k) = uprof(ke)
+            vprof(ke+k) = vprof(ke)
+            thlprof(ke+k) = thlprof(ke)
+            qtprof(ke+k) = qtprof(ke)
+            e12prof(ke+k) = e12prof(ke)
+         end do
+
+         do k = kb, ke + kh
             do j = jb - jh, je + jh
                do i = ib - ih, ie + ih
                   thl0(i, j, k) = thlprof(k)
@@ -1008,13 +1016,9 @@ module modstartup
             end do
          end do
          do k = 1, kh
-            thl0(:, :, ke+k) = thl0(:, :, ke)
             thl0(:, :, kb-k) = thl0(:, :, kb)
-            thlm(:, :, ke+k) = thlm(:, :, ke)
             thlm(:, :, kb-k) = thlm(:, :, kb)
-            qt0(:, :, ke+k) = qt0(:, :, ke)
             qt0(:, :, kb-k) = qt0(:, :, kb)
-            qtm(:, :, ke+k) = qtm(:, :, ke)
             qtm(:, :, kb-k) = qtm(:, :, kb)
          end do
 
@@ -1124,7 +1128,16 @@ module modstartup
             call MPI_BCAST(uprof, kmax, MY_REAL, 0, comm3d, mpierr)
             call MPI_BCAST(vprof, kmax, MY_REAL, 0, comm3d, mpierr)
             call MPI_BCAST(e12prof, kmax, MY_REAL, 0, comm3d, mpierr)
-            do k = kb, ke
+
+            do k = 1,kh
+               uprof(ke+k) = uprof(ke)
+               vprof(ke+k) = vprof(ke)
+               thlprof(ke+k) = thlprof(ke)
+               qtprof(ke+k) = qtprof(ke)
+               e12prof(ke+k) = e12prof(ke)
+            end do
+
+            do k = kb, ke + kh
             do j = jb - jh, je + jh
             do i = ib - ih, ie + ih
                thl0(i, j, k) = thlprof(k)
@@ -1148,33 +1161,19 @@ module modstartup
             end do
 
             do k = 1, kh
-               thl0(:, :, ke+k) = thl0(:, :, ke)
                thl0(:, :, kb-k) = thl0(:, :, kb)
-               thlm(:, :, ke+k) = thlm(:, :, ke)
                thlm(:, :, kb-k) = thlm(:, :, kb)
-               qt0(:, :, ke+k) = qt0(:, :, ke)
                qt0(:, :, kb-k) = qt0(:, :, kb)
-               qtm(:, :, ke+k) = qtm(:, :, ke)
                qtm(:, :, kb-k) = qtm(:, :, kb)
-               u0(:, :, ke+k) = u0(:, :, ke)
                u0(:, :, kb-k) = u0(:, :, kb)
-               um(:, :, ke+k) = um(:, :, ke)
                um(:, :, kb-k) = um(:, :, kb)
-               v0(:, :, ke+k) = v0(:, :, ke)
                v0(:, :, kb-k) = v0(:, :, kb)
-               vm(:, :, ke+k) = vm(:, :, ke)
                vm(:, :, kb-k) = vm(:, :, kb)
-               w0(:, :, ke+k) = w0(:, :, ke)
                w0(:, :, kb-k) = w0(:, :, kb)
-               wm(:, :, ke+k) = wm(:, :, ke)
                wm(:, :, kb-k) = wm(:, :, kb)
-               e120(:, :, ke+k) = e120(:, :, ke)
                e120(:, :, kb-k) = e120(:, :, kb)
-               e12m(:, :, ke+k) = e12m(:, :, ke)
                e12m(:, :, kb-k) = e12m(:, :, kb)
-               ekm(:, :, ke+k) = ekm(:, :, ke)
                ekm(:, :, kb-k) = ekm(:, :, kb)
-               ekh(:, :, ke+k) = ekh(:, :, ke)
                ekh(:, :, kb-k) = ekh(:, :, kb)
             end do
 
@@ -1555,6 +1554,11 @@ module modstartup
             end if ! end if myid==0
 
             call MPI_BCAST(svprof, (ke + khc - (kb - 1))*nsv, MY_REAL, 0, comm3d, mpierr)
+            do k = 1,khc
+               do n = 1, nsv
+                  svprof(ke+k,n) = svprof(ke,n)
+               end do
+            end do
 
             if (BCxs /= BCxs_custom) then
                do k = kb, ke
@@ -1682,6 +1686,15 @@ module modstartup
             call MPI_BCAST(uprof, kmax, MY_REAL, 0, comm3d, mpierr)
             call MPI_BCAST(vprof, kmax, MY_REAL, 0, comm3d, mpierr)
             call MPI_BCAST(e12prof, kmax, MY_REAL, 0, comm3d, mpierr)
+
+            do k = 1,kh
+               uprof(ke+k) = uprof(ke)
+               vprof(ke+k) = vprof(ke)
+               thlprof(ke+k) = thlprof(ke)
+               qtprof(ke+k) = qtprof(ke)
+               e12prof(ke+k) = e12prof(ke)
+            end do
+
             btime = timee
             um = u0
             vm = v0
@@ -1968,7 +1981,20 @@ module modstartup
                call MPI_BCAST(vprof, kmax, MY_REAL, 0, comm3d, mpierr)
                call MPI_BCAST(e12prof, kmax, MY_REAL, 0, comm3d, mpierr)
                call MPI_BCAST(qtprof, kmax, MY_REAL, 0, comm3d, mpierr)
-               call MPI_BCAST(svprof, (ke + kh - (kb - kh))*nsv, MY_REAL, 0, comm3d, mpierr)
+               call MPI_BCAST(svprof, (ke + khc - (kb - 1))*nsv, MY_REAL, 0, comm3d, mpierr)
+
+               do k = 1,kh
+                  uprof(ke+k) = uprof(ke)
+                  vprof(ke+k) = vprof(ke)
+                  thlprof(ke+k) = thlprof(ke)
+                  qtprof(ke+k) = qtprof(ke)
+                  e12prof(ke+k) = e12prof(ke)
+               end do
+               do k = 1,khc
+                  do n = 1, nsv
+                     svprof(ke+k,n) = svprof(ke,n)
+                  end do
+               end do
 
             else if (linoutflow) then ! restart of inoutflow simulation: reproduce inlet boundary condition from restartfile
                ! do j = jb - 1, je + 1
@@ -2017,7 +2043,12 @@ module modstartup
                  end if
               end if ! end if myid==0
 
-              call MPI_BCAST(svprof, (ke + kh - (kb - 1))*nsv, MY_REAL, 0, comm3d, mpierr)
+              call MPI_BCAST(svprof, (ke + khc - (kb - 1))*nsv, MY_REAL, 0, comm3d, mpierr)
+              do k = 1,khc
+               do n = 1, nsv
+                  svprof(ke+k,n) = svprof(ke,n)
+               end do
+              end do
 
               if (nsv>0) then !tg3315 set these variables here for now and repeat for warmstart
 

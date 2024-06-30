@@ -165,7 +165,7 @@ end subroutine tstep_update
 subroutine tstep_integrate
 
 
-  use modglobal, only : ib,ie,jb,jgb,je,kb,ke,nsv,dt,rk3step,e12min,lmoist,timee,ntrun,&
+  use modglobal, only : ib,ie,ih,jb,jgb,je,jh,kb,ke,kh,nsv,dt,rk3step,e12min,lmoist,timee,ntrun,&
                         linoutflow, iinletgen,ltempeq,idriver,BCtopm,BCtopm_pressure,BCxm_periodic,BCym_periodic, &
                         dzf,dzhi,dzf,dxf,ifixuinf,thlsrc,lchem,ibrank,ierank,jerank,jbrank,BCxm,BCym,ihc,jhc,khc,dyi,dxfi,BCxT,BCxq,BCxs,BCyT,BCyq,BCys
   use modmpi, only    : cmyid,myid,nprocs
@@ -253,11 +253,17 @@ subroutine tstep_integrate
   end if
 
   if ((BCxm .ne. BCxm_periodic) .and. ierank) then
-    u0(ie+1,jb:je,kb:ke) = um(ie+1,jb:je,kb:ke)  + rk3coef * up(ie+1,jb:je,kb:ke)
+    ! u0(ie+1,jb:je,kb:ke) = um(ie+1,jb:je,kb:ke)  + rk3coef * up(ie+1,jb:je,kb:ke)
+    do i=1,ih
+      u0(ie+i,jb:je,kb:ke) = um(ie+i,jb:je,kb:ke)  + rk3coef * up(ie+i,jb:je,kb:ke)
+    end do
   end if
 
   if ((BCym .ne. BCym_periodic) .and. jerank) then
-    v0(ib:ie,je+1,kb:ke) = vm(ib:ie,je+1,kb:ke)  + rk3coef * vp(ib:ie,je+1,kb:ke)
+    ! v0(ib:ie,je+1,kb:ke) = vm(ib:ie,je+1,kb:ke)  + rk3coef * vp(ib:ie,je+1,kb:ke)
+    do j=1,jh
+      v0(ib:ie,je+j,kb:ke) = vm(ib:ie,je+j,kb:ke)  + rk3coef * vp(ib:ie,je+j,kb:ke)
+    end do
   end if
 
   if (BCtopm .eq. BCtopm_pressure) then
@@ -275,7 +281,10 @@ subroutine tstep_integrate
     !     ! wp(i,j,ke+1) = 2*pij(ke)*dzhi(ke+1)
     !   end do
     ! end do
-    w0(ib:ie,jb:je,ke+1) = wm(ib:ie,jb:je,ke+1)  + rk3coef * wp(ib:ie,jb:je,ke+1)
+    ! w0(ib:ie,jb:je,ke+1) = wm(ib:ie,jb:je,ke+1)  + rk3coef * wp(ib:ie,jb:je,ke+1)
+    do k=1,kh
+      w0(ib:ie,jb:je,ke+k) = wm(ib:ie,jb:je,ke+k)  + rk3coef * wp(ib:ie,jb:je,ke+k)
+    end do
   end if
 
 
