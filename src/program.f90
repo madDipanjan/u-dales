@@ -36,6 +36,7 @@ program DALESURBAN      !Version 48
   use modpois,           only : initpois,poisson
   use modibm,            only : initibm,createmasks,ibmwallfun,ibmnorm,bottom
   use modtrees,          only : createtrees,trees
+  use modheatpump,       only : heatpump
   use modpurifiers,      only : createpurifiers,purifiers
   use initfac,           only : readfacetfiles
   use modEB,             only : initEB,EB
@@ -162,6 +163,7 @@ program DALESURBAN      !Version 48
     call EB
 
     call trees
+    call heatpump
 
     call scalsource     ! adds continuous forces in specified region of domain
 

@@ -194,6 +194,7 @@ module modglobal
    logical :: ltdump    = .false.      !<  switch to output time-averaged statistics every tstatsdump
 
    logical :: ltrees = .false.         !<  switch to turn on trees module
+   logical :: lheatpumps = .true.         !<  switch to turn on heatpumps module
    logical :: lpurif = .false.         !<  switch to turn on purifiers module
    logical :: ltreedump = .false.   !<  switch to output tree results time-averaged statistics every tstatsdump
 
@@ -327,6 +328,10 @@ module modglobal
    integer :: nscasrcl = 0              !< number of scalar line sources
    real, allocatable :: scasrcp(:,:,:)    !< field with data from scalarsourcep.inp.xxx containing coordinates of the source points, strength and standard deviation
    real, allocatable :: scasrcl(:,:,:)    !< field with data from scalarsourcel.inp.xxx containing coordinates of the end points of line sources, strength per unit length and standard deviation
+
+   ! heatpumps
+   integer :: nheatpumps = 0
+
 
    !trees
    integer, allocatable :: tree(:,:)             !< field with data from tree.inp.xxx

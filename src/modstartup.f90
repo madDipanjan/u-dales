@@ -74,6 +74,7 @@ module modstartup
                                     idriver,tdriverstart,driverjobnr,dtdriver,driverstore,lchunkread,chunkread_size, &
                                     lrandomize, prandtlturb, fkar, lwritefac, dtfac, tfac, tnextfac, &
                                     ltrees,ntrees,Qstar,dQdt,lad,lsize,r_s,cd,dec,ud,ltreedump, &
+                                    lheatpumps,nheatpumps, &
                                     lpurif,npurif,Qpu,epu
       use modsurfdata,       only : z0, z0h,  wtsurf, wttop, wqtop, wqsurf, wsvsurf, wsvtop, wsvsurfdum, wsvtopdum, ps, thvs, thls, thl_top, qt_top, qts
       use modfields,         only : initfields, dpdx, ncname
@@ -565,6 +566,7 @@ module modstartup
       call MPI_BCAST(lrandomize, 1, MPI_LOGICAL, 0, comm3d, mpierr)
       call MPI_BCAST(prandtlturb, 1, MY_REAL, 0, comm3d, mpierr)
       call MPI_BCAST(fkar, 1, MY_REAL, 0, comm3d, mpierr)
+      call MPI_BCAST(lheatpumps, 1, MPI_LOGICAL, 0, comm3d, mpierr)
       call MPI_BCAST(ltrees, 1, MPI_LOGICAL, 0, comm3d, mpierr)
       call MPI_BCAST(ntrees, 1, MPI_INTEGER, 0, comm3d, mpierr)
       call MPI_BCAST(ltreedump, 1, MPI_LOGICAL, 0, comm3d, mpierr)
