@@ -690,11 +690,15 @@ subroutine excjs(a,sx,ex,sy,ey,sz,ez,ih,jh)
   integer                 :: II(ib:ie,jb:je,kb:ke)
   integer                 :: IIt(ib:ie,kb:ke)
   logical                 :: lytdump,lnan
+  real                    :: temp_array(ib:ie,jb:je,kb:ke)
 
   avero = 0.
   aver  = 0.
 
-  avero = sum(var(ib:ie,jb:je,kb:ke)*II(ib:ie,jb:je,kb:ke), DIM=2)
+  !avero = sum(var(ib:ie,jb:je,kb:ke)*II(ib:ie,jb:je,kb:ke), DIM=2)
+  temp_array = var(ib:ie,jb:je,kb:ke) * II(ib:ie,jb:je,kb:ke)
+  avero = sum(temp_array, DIM=2)
+
 
   call MPI_ALLREDUCE(avero(ib:ie,kb:ke), aver(ib:ie,kb:ke), (ke-kb+1)*(ie-ib+1), MY_REAL,MPI_SUM, comm3d,mpierr)
 
