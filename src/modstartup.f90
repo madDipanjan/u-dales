@@ -920,8 +920,6 @@ module modstartup
           stop 1
        end if
 
-       write(*,*) "END checkinitvalues"
-
    end subroutine checkinitvalues
 
    subroutine readinitfiles

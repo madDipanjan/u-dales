@@ -446,31 +446,28 @@ contains
     select case (ipoiss)
     case(POISS_FFT2D_2DECOMP)
 #if defined(_GPU)
-      write(*,*) "POISS_FFT2D_2DECOMP on GPU with generic."
+      write(*,*) "POISS_FFT2D_2DECOMP on GPU."
 #else
       write(*,*) "POISS_FFT2D_2DECOMP on CPU."
 #endif
       call alloc_x(px, opt_levels=(/0,0,0/))
       call alloc_y(py, opt_levels=(/0,0,0/))
       call alloc_z(pz, opt_levels=(/0,0,0/))
-
       allocate(Fz(sp%zsz(1),sp%zsz(2),sp%zsz(3)))
       allocate(d (sp%zsz(1),sp%zsz(2),sp%zsz(3)))
       sp_zst1=sp%zst(1);sp_zst2=sp%zst(2);sp_zst3=sp%zst(3);
       sp_zen1=sp%zen(1);sp_zen2=sp%zen(2);sp_zen3=sp%zen(3);
-      !write(*,*) sp%xsz(1),sp%xsz(2),sp%xsz(3), size(Fx)
 
       pz = p(ib:ie,jb:je,kb:ke)
 
-      !write(*,*) pz(1,1,1), pz(ie/4,je/4,ke/4), pz(ie/2,je/2,ke/2), pz(3*ie/4, 3*je/4, 3*ke/4), pz(ie,je,ke)
-
       ! Starting in z-pencil, transpose to x-pencil
-      !$acc data create(px, py, pz, Fz, b, c, d, xyzrt)
-      !$acc update device(pz, b, c, xyzrt)
+      !$acc data create(px, py, pz, Fz, a, b, c, d, xyzrt)
+      !$acc update device(pz, a, b, c, xyzrt)
       call transpose_z_to_y(pz, py)
       call transpose_y_to_x(py, px)
 
       call decomp_2d_fft_3d(px, Fz)
+
       !$acc kernels
       Fz = Fz/sqrt(1.*itot*jtot)
       !$acc end kernels
@@ -518,7 +515,7 @@ contains
       !$acc kernels default(present)
       do k=sp_zen3-1,1,-1
         do j=1,sp_zen2
-          do i=1,sp%zsz(1)
+          do i=1,sp_zen1
             Fz(i,j,k) = Fz(i,j,k)-d(i,j,k)*Fz(i,j,k+1)
           end do
         end do
@@ -526,6 +523,7 @@ contains
       !$acc end kernels
 
       call decomp_2d_fft_3d(Fz, px)
+
       !$acc kernels
       px = px/sqrt(1.*itot*jtot)
       !$acc end kernels
@@ -535,14 +533,9 @@ contains
       !$acc update host(pz)
       !$acc end data
 
-!      write(*,*) pz(1,1,1), pz(ie/4,je/4,ke/4), pz(ie/2,je/2,ke/2), pz(3*ie/4, 3*je/4, 3*ke/4), pz(ie,je,ke)
-
       p(ib:ie,jb:je,kb:ke) = pz
 
-      deallocate(px,py,pz,Fx,Fy,Fz,d)
-
-!      write(*,*) p(1,1,1), p(ie/4,je/4,ke/4), p(ie/2,je/2,ke/2), p(3*ie/4, 3*je/4, 3*ke/4), p(ie,je,ke)
-
+      deallocate(px,py,pz,Fz,d)
 
     case (POISS_FFT3D)
       allocate(Fx(sp%xsz(1),sp%xsz(2),sp%xsz(3)))

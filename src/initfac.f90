@@ -194,13 +194,13 @@
         !e.g. lets assume walltype -3,-1,1,2,3 and 5 are defined.
         !index: [-3,-2,-1,0,1,2,3,4,5]  -> [-3,-2,-1,0,1,2,3,4,5]
         !value: [ 0, 0, 0,0,0,0,0,0,0]  -> [ 1, 0, 2,0,3,4,5,0,6]
-        !allocate (typeloc(int(minval(factypes(:, 1))):int(maxval(factypes(:, 1)))))
+        allocate (typeloc(int(minval(factypes(:, 1))):int(maxval(factypes(:, 1)))))
 
         if (myid .eq. 0 .and. libm) then
           typeloc = 0
-          do n = 1, nfactypes
-            typeloc(int(factypes(n, 1))) = n
-          end do
+            do n = 1, nfactypes
+              typeloc(int(factypes(n, 1))) = n
+              end do
 
               open (ifinput, file='facets.inp.'//cexpnr)
               read (ifinput, '(a80)') chmess
@@ -241,58 +241,58 @@
                 ! end do
               end do
 
-             if (lEB .or. lwritefac) then
-               ! read facet areas
-               open (ifinput, file='facetarea.inp.'//cexpnr)
-               read (ifinput, '(a80)') chmess
-               do n = 1, nfcts
-                 read (ifinput, *) &
-                 faca(n)
-               end do
-               close (ifinput)
+              if (lEB .or. lwritefac) then
+                ! read facet areas
+                open (ifinput, file='facetarea.inp.'//cexpnr)
+                read (ifinput, '(a80)') chmess
+                do n = 1, nfcts
+                  read (ifinput, *) &
+                  faca(n)
+                end do
+                close (ifinput)
              end if
 
              if (lEB) then
-               if (lvfsparse) then
-                  open (ifinput, file='vfsparse.inp.'//cexpnr)
-                  do n = 1, nnz
-                    read (ifinput, *) ivfsparse(n), jvfsparse(n), vfsparse(n)
-                  end do
-                  close (ifinput)
+                if (lvfsparse) then
+                   open (ifinput, file='vfsparse.inp.'//cexpnr)
+                   do n = 1, nnz
+                     read (ifinput, *) ivfsparse(n), jvfsparse(n), vfsparse(n)
+                   end do
+                   close (ifinput)
 
-               else
-                 FILE_VF = 'vf.nc.inp.'//cexpnr
-                 iret = nf90_open(FILE_VF, NF90_NOWRITE, ncid) ! Get the varid of the data variable, based on its name.
-                 iret = nf90_inq_varid(ncid, "view factor", varid)
-                 ! Read the data.
-                 iret = nf90_get_var(ncid, varid, vf)
-               end if
+                else
+                  FILE_VF = 'vf.nc.inp.'//cexpnr
+                  iret = nf90_open(FILE_VF, NF90_NOWRITE, ncid) ! Get the varid of the data variable, based on its name.
+                  iret = nf90_inq_varid(ncid, "view factor", varid)
+                  ! Read the data.
+                  iret = nf90_get_var(ncid, varid, vf)
+                end if
 
-               ! read skyviewfactors
-               open (ifinput, file='svf.inp.'//cexpnr)
-               read (ifinput, '(a80)') chmess
-               do n = 1, nfcts
-                 read (ifinput, *) &
-                 svf(n)
-               end do
-               close (ifinput)
+                ! read skyviewfactors
+                open (ifinput, file='svf.inp.'//cexpnr)
+                read (ifinput, '(a80)') chmess
+                do n = 1, nfcts
+                  read (ifinput, *) &
+                  svf(n)
+                end do
+                close (ifinput)
 
-               ! read net shortwave radiation
-               open (ifinput, file='netsw.inp.'//cexpnr)
-               read (ifinput, '(a80)') chmess
-               do n = 1, nfcts
-                 read (ifinput, *) &
-                 netsw(n)
-               end do
-               close (ifinput)
+                ! read net shortwave radiation
+                open (ifinput, file='netsw.inp.'//cexpnr)
+                read (ifinput, '(a80)') chmess
+                do n = 1, nfcts
+                  read (ifinput, *) &
+                  netsw(n)
+                end do
+                close (ifinput)
 
-               do n = 1,nfcts
-                  if (faclGR(n)) then
-                     facwsoil(n) = wsoil
-                  end if
-               end do
+                do n = 1,nfcts
+                   if (faclGR(n)) then
+                      facwsoil(n) = wsoil
+                   end if
+                end do
 
-             end if !lEB
+              end if !lEB
 
               if ((lEB) .or. (iwalltemp == 2) .or. (iwallmom == 2) .or. (iwallmoist==2)) then
                 ! initial facet temperatures
@@ -372,21 +372,21 @@
             !call MPI_BCAST(faclam(0:nfcts, 1:nfaclyrs), (nfcts + 1)*nfaclyrs, MY_REAL, 0, comm3d, mpierr)
             !call MPI_BCAST(fackappa(0:nfcts, 1:nfaclyrs+1), (nfcts + 1)*(nfaclyrs+1), MY_REAL, 0, comm3d, mpierr)
 
-            !if (lEB) then
-            !  ! no need to broadcast - only used by rank 0
-            !  !call MPI_BCAST(svf(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(netsw(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
-            !  ! no need to broadcast - not dependent on input files
-            !  !call MPI_BCAST(facTdash(1:nfcts, 1:nfaclyrs+1), (nfcts)*(nfaclyrs+1), MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(facef(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(facefi(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(facefsum(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(fachf(0:nfcts), nfcts + 1, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(fachfi(0:nfcts), nfcts + 1, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(fachfsum(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(facwsoil(0:nfcts), nfcts + 1, MY_REAL, 0, comm3d, mpierr)
-            !  !call MPI_BCAST(facf(0:nfcts, 1:5), (nfcts + 1)*5, MY_REAL, 0, comm3d, mpierr)
-            !end if
+            if (lEB) then
+              ! no need to broadcast - only used by rank 0
+              !call MPI_BCAST(svf(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(netsw(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
+              ! no need to broadcast - not dependent on input files
+              !call MPI_BCAST(facTdash(1:nfcts, 1:nfaclyrs+1), (nfcts)*(nfaclyrs+1), MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(facef(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(facefi(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(facefsum(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(fachf(0:nfcts), nfcts + 1, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(fachfi(0:nfcts), nfcts + 1, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(fachfsum(1:nfcts), nfcts, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(facwsoil(0:nfcts), nfcts + 1, MY_REAL, 0, comm3d, mpierr)
+              !call MPI_BCAST(facf(0:nfcts, 1:5), (nfcts + 1)*5, MY_REAL, 0, comm3d, mpierr)
+            end if
 
             if ((lEB) .or. (iwalltemp == 2) .or. (iwallmom == 2)) then
                call MPI_BCAST(facT(0:nfcts, 1:nfaclyrs+1), (nfcts + 1)*(nfaclyrs+1), MY_REAL, 0, comm3d, mpierr)
@@ -399,7 +399,7 @@
                end if
             end if
 
-      end subroutine readfacetfiles
+          end subroutine readfacetfiles
 
       real function qsat(T)
          implicit none

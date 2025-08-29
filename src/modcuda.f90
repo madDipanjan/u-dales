@@ -69,14 +69,9 @@ module modcuda
          integer :: blocknumx, blocknumy, blocknumz
          type(cudaDeviceProp) :: props
          integer :: deviceID, SMcount
-
-         write(*,*) "Start initCUDA"
          
          call checkCUDA( cudaGetDevice( deviceID ), 'cudaGetDevice_in_modcuda' )
-         write(*,*) "Start initCUDA device"
          call checkCUDA( cudaGetDeviceProperties(props, deviceId), 'cudaGetDeviceProperties_in_modcuda' )
-         
-         write(*,*) "after checkCUDA device prop"
          
          !! SMcount = props%multiProcessorCount
          !! write(*,*) props%warpsize, props%multiProcessorCount, props%maxThreadsPerBlock, props%maxThreadsPerMultiProcessor

@@ -65,8 +65,8 @@ then
 elif [ $system == "gpu" ]
 then
     FC=mpif90
-    NETCDF_DIR=/work4/scd/scarf924/Software/opt_nvhpc2505
-    NETCDF_FORTRAN_DIR=/work4/scd/scarf924/Software/opt_nvhpc2505
+    NETCDF_DIR=/home/dipanjan/mygpu/netcdf-c-4.9.2/netcdfc
+    NETCDF_FORTRAN_DIR=/home/dipanjan/mygpu/netcdf-fortran-4.6.1/netcdff
 
 elif [ $system == "common" ]
 then

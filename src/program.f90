@@ -100,7 +100,6 @@ program DALESURBAN      !Version 48
   call createscals
 
 #if defined(_GPU)
-  write(*,*) 'INIT GPU'
   call initCUDA
 #endif
 
